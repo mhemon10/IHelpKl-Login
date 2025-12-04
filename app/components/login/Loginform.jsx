@@ -178,7 +178,14 @@ const LoginPage = () => {
             </button>
 
             {/* SOCIAL LOGIN */}
-           
+            <div className="flex flex-col space-y-3 mt-4">
+              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition transform hover:scale-105">
+                <GoogleIcon /> Sign in with Google
+              </button>
+              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition transform hover:scale-105">
+                <FacebookIcon /> Sign in with Facebook
+              </button>
+            </div>
 
             {/* Sign up link */}
             <p className="text-center text-sm text-gray-600 mt-4">
