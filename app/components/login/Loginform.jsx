@@ -58,7 +58,39 @@ const LoginPage = () => {
 
   // --- Right Side ---
   const RightSideFeatureVisual = () => (
-    
+    <div className="hidden lg:flex w-2/3 p-8 md:p-16 bg-orange-50 items-center justify-center animate-fadeInRight">
+      <div className="bg-white p-6 md:p-10 rounded-xl shadow-xl max-w-xl w-full text-center">
+        <h5 className="text-sm font-semibold text-orange-500 mb-2 tracking-wider uppercase">
+          SAY GOODBYE TO MANUAL DATA ENTRY
+        </h5>
+        <h2 className="text-3xl font-bold text-gray-900 mb-6">
+          Let your CRM work for you
+        </h2>
+        <p className="text-gray-600 max-w-sm mx-auto mb-10">
+          With our form builder, collecting customer info is effortless.
+        </p>
+        <div className="flex justify-center">
+          <Image
+            src={RIGHT_IMAGE_CONFIG.src}
+            alt={RIGHT_IMAGE_CONFIG.alt}
+            width={RIGHT_IMAGE_CONFIG.width}
+            height={RIGHT_IMAGE_CONFIG.height}
+            className="rounded-lg h-auto w-full max-w-full"
+          />
+        </div>
+        <div className="mt-8 flex justify-center">
+          <label className="flex items-center text-sm font-medium text-gray-700">
+            <input
+              type="checkbox"
+              className="h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
+            />
+            <span className="ml-2">
+              Click here to be taken to the form builder after you log in
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
   );
 
   return (
