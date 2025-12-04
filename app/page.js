@@ -1,10 +1,12 @@
 import React from 'react';
-import LoginPageOrange from './components/login/Loginform';
+import LoginPage from './components/login/Loginform';
+
+
 
 const page = () => {
   return (
     <div>
-      <LoginPageOrange></LoginPageOrange>
+      <LoginPage></LoginPage>
     </div>
   );
 };
