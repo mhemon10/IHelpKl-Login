@@ -60,7 +60,7 @@ const LoginPage = () => {
     <div
       className="hidden lg:flex w-2/3 p-8 md:p-16 items-center justify-center animate-fadeInRight relative overflow-hidden"
       style={{
-        backgroundImage: "url('/login-bg.jpeg')", // <-- YOUR BACKGROUND IMAGE
+        backgroundImage: "url('/bg-main.webp')", // <-- YOUR BACKGROUND IMAGE
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}>
