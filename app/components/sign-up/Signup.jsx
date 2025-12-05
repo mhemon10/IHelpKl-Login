@@ -8,8 +8,8 @@ import Image from "next/image";
 const LOGO_CONFIG = {
   src: "/logo.svg",
   alt: "Company Logo",
-  width: 45,
-  height: 45,
+  width: 150,
+  height: 150,
 };
 
 const LEFT_IMAGE_CONFIG = {
@@ -55,7 +55,7 @@ const LeftSideFeatureVisual = () => {
     "No limit on users. Invite the whole team.",
     "Use with confidence. Over 10,000 small businesses use LACRM.",
     "Private and secure.",
-    "Your data belongs to you.",
+    // "Your data belongs to you.",
   ];
 
   const featurePositions = [

@@ -10,6 +10,7 @@ const LOGO_CONFIG = {
   width: 150,
   height: 150,
 };
+
 const RIGHT_IMAGE_CONFIG = {
   src: "/loginimg-1.jpeg",
   alt: "CRM Feature Visual",
@@ -17,6 +18,7 @@ const RIGHT_IMAGE_CONFIG = {
   height: 600,
 };
 
+// MAIN COMPONENT
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -27,10 +29,7 @@ const LoginPage = () => {
 
   // --- Icons ---
   const GoogleIcon = () => (
-    <svg
-      className="w-5 h-5 mr-3"
-      viewBox="0 0 533.5 544.3"
-      xmlns="http://www.w3.org/2000/svg">
+    <svg className="w-5 h-5 mr-3" viewBox="0 0 533.5 544.3">
       <path
         d="M533.5 272.2c0-18.7-1.4-37.1-4.7-55.1H266.7v104.2h149.2c-6.6 34.3-25.9 63.8-54.8 85.8v68.3h88.6c51.9-47.8 82-117.8 82-203.2z"
         fill="#4285F4"
@@ -56,19 +55,32 @@ const LoginPage = () => {
     </svg>
   );
 
-  // --- Right Side ---
+  // --- RIGHT SIDE UPDATED (BACKGROUND IMAGE + BLACK OVERLAY) ---
   const RightSideFeatureVisual = () => (
-    <div className="hidden lg:flex w-2/3 p-8 md:p-16 bg-orange-50 items-center justify-center animate-fadeInRight">
-      <div className="bg-white p-6 md:p-10 rounded-xl shadow-xl max-w-xl w-full text-center">
+    <div
+      className="hidden lg:flex w-2/3 p-8 md:p-16 items-center justify-center animate-fadeInRight relative overflow-hidden"
+      style={{
+        backgroundImage: "url('/login-bg.jpeg')", // <-- YOUR BACKGROUND IMAGE
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}>
+      {/* Black Overlay */}
+      <div className="absolute inset-0 bg-black/50 z-0"></div>
+
+      {/* White Card */}
+      <div className="relative z-10 bg-white p-6 md:p-10 rounded-xl shadow-xl max-w-xl w-full text-center">
         <h5 className="text-sm font-semibold text-orange-500 mb-2 tracking-wider uppercase">
           SAY GOODBYE TO MANUAL DATA ENTRY
         </h5>
+
         <h2 className="text-3xl font-bold text-gray-900 mb-6">
           Let your CRM work for you
         </h2>
+
         <p className="text-gray-600 max-w-sm mx-auto mb-10">
           With our form builder, collecting customer info is effortless.
         </p>
+
         <div className="flex justify-center">
           <Image
             src={RIGHT_IMAGE_CONFIG.src}
@@ -78,6 +90,7 @@ const LoginPage = () => {
             className="rounded-lg h-auto w-full max-w-full"
           />
         </div>
+
         <div className="mt-8 flex justify-center">
           <label className="flex items-center text-sm font-medium text-gray-700">
             <input
@@ -125,7 +138,7 @@ const LoginPage = () => {
         }
       `}</style>
 
-      {/* LEFT SIDE FORM 35% */}
+      {/* LEFT SIDE (35%) */}
       <div className="w-full lg:w-1/3 flex flex-col items-center justify-center p-10 animate-fadeInLeft">
         <div className="max-w-md w-full">
           {/* Logo */}
@@ -171,6 +184,7 @@ const LoginPage = () => {
               </button>
             </div>
 
+            {/* MAIN LOGIN BUTTON */}
             <button
               type="submit"
               className="w-full py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
@@ -179,10 +193,10 @@ const LoginPage = () => {
 
             {/* SOCIAL LOGIN */}
             <div className="flex flex-col space-y-3 mt-4">
-              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition transform hover:scale-105">
+              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
                 <GoogleIcon /> Sign in with Google
               </button>
-              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition transform hover:scale-105">
+              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
                 <FacebookIcon /> Sign in with Facebook
               </button>
             </div>
@@ -200,7 +214,7 @@ const LoginPage = () => {
         </div>
       </div>
 
-      {/* RIGHT SIDE 65% */}
+      {/* RIGHT SIDE */}
       <RightSideFeatureVisual />
     </div>
   );
