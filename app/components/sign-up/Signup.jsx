@@ -1,42 +1,65 @@
 "use client";
 
 import React, { useState } from "react";
-import { CheckCircle, ChevronDown, Facebook, Apple } from "lucide-react"; // Apple icon যোগ করা হলো
+import { CheckCircle, Facebook } from "lucide-react";
 import Image from "next/image";
 
 // --- CONFIG ---
 const LOGO_CONFIG = {
   src: "/logo.svg",
   alt: "Company Logo",
-  width: 48,
-  height: 48,
+  width: 45,
+  height: 45,
 };
 
 const LEFT_IMAGE_CONFIG = {
   src: "/sign-up.jpeg",
   alt: "Trial Feature Visual",
-  width: 700, // বড় করা
+  width: 700,
   height: 700,
 };
 
-// --- FEATURE TEXTS ---
-const FEATURES = [
-  "Unlimited everything, no credit card required.",
-  "No limit on users. Invite the whole team.",
-  "Use with confidence. Over 10,000 small businesses use LACRM.",
-  "Private and secure.",
-  "Your data belongs to you.",
-];
+const BACKGROUND_IMAGE_CONFIG = {
+  src: "/bg-main.webp",
+};
 
 // --- Google Icon ---
 const GoogleIcon = () => (
- 
+  <svg
+    className="w-5 h-5 mr-3"
+    viewBox="0 0 533.5 544.3"
+    xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M533.5 272.2c0-18.7-1.4-37.1-4.7-55.1H266.7v104.2h149.2c-6.6 34.3-25.9 63.8-54.8 85.8v68.3h88.6c51.9-47.8 82-117.8 82-203.2z"
+      fill="#4285F4"
+    />
+    <path
+      d="M266.7 544.3c71.6 0 131.8-23.7 175.7-64.4l-88.6-68.3c-24.5 16.5-55.8 25.8-87.1 25.8-67.6 0-124.9-45.7-145.4-106.9H32.4v70.2c44.1 87.5 137.9 146.9 234.3 146.9z"
+      fill="#34A853"
+    />
+    <path
+      d="M121.3 320.1c-4.9-14.5-7.7-29.7-7.7-44.8s2.8-30.3 7.7-44.8V159.5H32.4c-15.9 31.5-24.5 68.4-24.5 108.8 0 40.4 8.6 77.3 24.5 108.8l88.9-70.2z"
+      fill="#FBBC05"
+    />
+    <path
+      d="M266.7 104.2c39.9 0 75.9 13.8 103.9 40.5l78.7-78.7c-48.4-45.5-112.5-67.1-182.7-67.1C128.8 0 35 59.4 0 146.9l88.9 70.2c20.5-61.2 77.8-106.9 145.4-106.9z"
+      fill="#EA4335"
+    />
+  </svg>
 );
 
-// --- Left Side Component ---
+// --- LEFT SECTION (BLOB REMOVED + CLEAN VERSION) ---
 const LeftSideFeatureVisual = () => {
+  const FEATURES = [
+    "Unlimited everything, no credit card required.",
+    "No limit on users. Invite the whole team.",
+    "Use with confidence. Over 10,000 small businesses use LACRM.",
+    "Private and secure.",
+    "Your data belongs to you.",
+  ];
+
   const featurePositions = [
-    "top-[20%] left-[5%]",
+    "top-[21%] left-[5%]",
     "top-[25%] right-[5%]",
     "top-[65%] right-[70%]",
     "top-[65%] right-[10%]",
@@ -44,40 +67,37 @@ const LeftSideFeatureVisual = () => {
   ];
 
   return (
-    <div className="w-full h-full p-8 md:p-16 bg-gray-50 flex items-center justify-center relative overflow-hidden">
-      {/* Background blobs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-blue-100 opacity-50 blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-pink-100 opacity-50 blur-3xl animate-pulse delay-100"></div>
+    <div
+      className="w-full h-full p-8 md:p-16 flex items-center justify-center relative overflow-hidden"
+      style={{
+        backgroundImage: `url(${BACKGROUND_IMAGE_CONFIG.src})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}>
+      {/* DARK OVERLAY */}
+      <div className="absolute inset-0 bg-black/40 z-0"></div>
 
-      {/* Main Image */}
-      <div className="relative z-10 w-full max-w-3xl h-full max-h-[800px] flex items-center justify-center animate-fadeInRight">
+      {/* MAIN IMAGE */}
+      <div className="relative z-20 w-full max-w-3xl h-full max-h-[800px] flex items-center justify-center animate-fadeInRight">
         <Image
           src={LEFT_IMAGE_CONFIG.src}
           alt={LEFT_IMAGE_CONFIG.alt}
           width={LEFT_IMAGE_CONFIG.width}
           height={LEFT_IMAGE_CONFIG.height}
-          className="rounded-xl object-cover shadow-2xl ring-4 ring-white"
+          className="rounded-full object-cover shadow-2xl "
         />
       </div>
 
-      {/* Title */}
-      <h3
-        className="absolute top-10 left-10 text-3xl font-light text-gray-800 animate-fadeIn"
-        style={{ animationDelay: "200ms" }}>
-        Your trial includes
-      </h3>
-
-      {/* Feature bubbles */}
+      {/* FEATURE TEXT BUBBLES */}
       {FEATURES.map((feature, index) => (
         <div
           key={index}
-          className={`absolute z-20 p-4 bg-white rounded-lg shadow-xl text-gray-700 max-w-[220px] opacity-0 animate-fadeIn transform
-            ${featurePositions[index % featurePositions.length]}`}
+          className={`absolute z-30 p-4 bg-white/70 rounded-lg shadow-xl text-gray-800 max-w-[220px] bubble-fadeIn backdrop-blur-sm ${featurePositions[index]}`}
           style={{
             animationDelay: `${500 + index * 200}ms`,
             animationFillMode: "forwards",
           }}>
-          <CheckCircle className="w-5 h-5 text-orange-500 mb-1" />
+          <CheckCircle className="w-5 h-5 text-orange-600 mb-1" />
           <p className="text-sm font-medium leading-tight">{feature}</p>
         </div>
       ))}
@@ -85,31 +105,127 @@ const LeftSideFeatureVisual = () => {
   );
 };
 
-// --- SignUp Page ---
-const SignUpPage = () => {
+// --- SIGN UP PAGE ---
+export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState(1);
-  const [selectedIndustry, setSelectedIndustry] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Sign Up attempt...");
   };
 
   return (
-    <div className="flex items-stretch min-h-screen bg-white">
-      {/* CSS for animation */}
-      <style jsx global>{`
-        @keyframes fadeIn {
+    <div className="flex items-stretch h-screen bg-white overflow-hidden">
+      {/* LEFT COLUMN */}
+      <div className="hidden lg:flex h-full w-2/3">
+        <LeftSideFeatureVisual />
+      </div>
+
+      {/* RIGHT COLUMN */}
+      <div className="w-full lg:w-1/3 flex flex-col items-center justify-center p-10 animate-fadeInLeft">
+        <div className="max-w-md w-full">
+          {/* LOGO */}
+          <div className="flex justify-center mb-10">
+            <Image
+              src={LOGO_CONFIG.src}
+              alt={LOGO_CONFIG.alt}
+              width={LOGO_CONFIG.width}
+              height={LOGO_CONFIG.height}
+            />
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* INDUSTRY */}
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-1 block">
+                Industry
+              </label>
+              <input
+                type="text"
+                required
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500"
+                placeholder="Enter your industry"
+              />
+            </div>
+
+            {/* EMAIL */}
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-1 block">
+                Email
+              </label>
+              <input
+                type="email"
+                required
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500"
+                placeholder="Enter your email"
+              />
+            </div>
+
+            {/* PASSWORD */}
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-1 block">
+                Password
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500"
+                placeholder="Enter your password"
+              />
+              <button
+                type="button"
+                className="text-orange-500 text-sm mt-1"
+                onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? "Hide" : "Show"} Password
+              </button>
+            </div>
+
+            {/* SUBMIT */}
+            <button
+              type="submit"
+              className="w-full py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
+              Start your free trial
+            </button>
+
+            {/* SOCIAL */}
+            <div className="flex flex-col space-y-3 mt-4">
+              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                <GoogleIcon /> Sign in with Google
+              </button>
+              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                <Facebook className="w-5 h-5 mr-3 text-blue-600" />
+                Sign in with Facebook
+              </button>
+            </div>
+
+            {/* LOGIN LINK */}
+            <p className="text-center text-sm text-gray-600 mt-4">
+              Already have an account?{" "}
+              <a
+                href="/ "
+                className="text-orange-500 font-semibold hover:underline">
+                Log in
+              </a>
+            </p>
+          </form>
+        </div>
+      </div>
+
+      {/* ANIMATIONS */}
+      <style jsx>{`
+        @keyframes fadeInLeft {
           from {
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateX(-20px);
           }
           to {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateX(0);
           }
         }
+        .animate-fadeInLeft {
+          animation: fadeInLeft 0.8s ease-out forwards;
+        }
+
         @keyframes fadeInRight {
           from {
             opacity: 0;
@@ -120,189 +236,24 @@ const SignUpPage = () => {
             transform: translateX(0);
           }
         }
-        .animate-fadeIn {
-          animation-name: fadeIn;
-          animation-duration: 0.8s;
-          animation-timing-function: ease-out;
-          animation-fill-mode: forwards;
-        }
         .animate-fadeInRight {
-          animation-name: fadeInRight;
-          animation-duration: 0.8s;
-          animation-timing-function: ease-out;
-          animation-fill-mode: forwards;
+          animation: fadeInRight 0.8s ease-out forwards;
+        }
+
+        @keyframes bubbleFade {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .bubble-fadeIn {
+          animation: bubbleFade 0.6s ease-out forwards;
         }
       `}</style>
-
-      {/* Main Two Column Layout */}
-      <div className="w-full grid grid-cols-1 lg:grid-cols-[65%_35%]">
-        {/* Left Column */}
-        <div className="hidden lg:flex lg:items-center lg:justify-center min-h-screen">
-          <LeftSideFeatureVisual />
-        </div>
-
-        {/* Right Column: Form */}
-        <div
-          className="flex flex-col p-6 md:p-10 lg:p-12 min-h-screen transition-all duration-700 transform opacity-0 animate-fadeIn bg-white"
-          style={{ animationDelay: "500ms" }}>
-          {/* 🚨 লোগোকে একদম উপরে বাম দিকে রাখা হলো */}
-          <div className="flex items-start mb-8">
-            <Image
-              src={LOGO_CONFIG.src}
-              alt={LOGO_CONFIG.alt}
-              width={LOGO_CONFIG.width}
-              height={LOGO_CONFIG.height}
-              className="w-8 h-8 lg:w-10 lg:h-10"
-            />
-          </div>
-
-          {/* Form Content: Title, Social Sign-in, Form fields */}
-          <div className="flex flex-col flex-grow justify-center">
-            <h1 className="text-2xl font-bold text-gray-800 mb-6">
-              Sign up for a free trial
-            </h1>
-
-            {/* Social Sign-in */}
-            <div className="space-y-3 mb-6">
-              <button className="w-full flex justify-center items-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition duration-300">
-                <GoogleIcon />
-                Sign up with Google
-              </button>
-
-              {/* Facebook বা Apple ব্যবহার করা যেতে পারে, ছবির সাথে মিল রেখে Apple ব্যবহার করা হলো */}
-              <button className="w-full flex justify-center items-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition duration-300">
-                <Apple className="w-6 h-6 mr-3 text-gray-700" />
-                Sign up with Apple
-              </button>
-            </div>
-
-            <div className="w-full border-b border-gray-200 mb-6"></div>
-
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4 w-full">
-              {/* Email Field */}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700">
-                  Email
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 transition"
-                  placeholder="Enter your email"
-                />
-              </div>
-
-              {/* Password Field */}
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700">
-                  Password
-                </label>
-                <div className="relative">
-                  <input
-                    id="password"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500 transition"
-                    placeholder="Enter your password"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-xs font-medium text-blue-600 hover:text-blue-500">
-                    {showPassword ? "HIDE" : "SHOW"}
-                  </button>
-                </div>
-                <p className="mt-1 text-xs text-gray-500">
-                  Must be at least 12 characters long
-                </p>
-              </div>
-
-              {/* Users dropdown */}
-              <div>
-                <label
-                  htmlFor="users"
-                  className="block text-sm font-medium text-gray-700">
-                  How many users will need access to your CRM?
-                </label>
-                <div className="relative">
-                  <select
-                    id="users"
-                    name="users"
-                    value={selectedUsers}
-                    onChange={(e) => setSelectedUsers(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg appearance-none bg-white focus:ring-orange-500 focus:border-orange-500 transition">
-                    <option value={1}>Just me (1 user)</option>
-                    <option value={2}>2 users</option>
-                    <option value={5}>3-5 users</option>
-                    <option value={10}>6-10 users</option>
-                    <option value={99}>More than 10</option>
-                  </select>
-                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                </div>
-              </div>
-
-              {/* Industry dropdown */}
-              <div>
-                <label
-                  htmlFor="industry"
-                  className="block text-sm font-medium text-gray-700">
-                  Industry
-                </label>
-                <div className="relative">
-                  <select
-                    id="industry"
-                    name="industry"
-                    value={selectedIndustry}
-                    onChange={(e) => setSelectedIndustry(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg appearance-none bg-white focus:ring-orange-500 focus:border-orange-500 transition">
-                    <option value="">Select your industry</option>
-                    <option value="real_estate">Real Estate</option>
-                    <option value="financial">Financial Services</option>
-                    <option value="consulting">Consulting</option>
-                    <option value="other">Other</option>
-                  </select>
-                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                </div>
-                <p className="mt-1 text-xs text-gray-500">
-                  This helps us customize the CRM to fit your business
-                </p>
-              </div>
-
-              {/* Start Trial Button */}
-              <div className="pt-4">
-                <button
-                  type="submit"
-                  className="w-full flex justify-center items-center px-4 py-3 border border-transparent rounded-lg shadow-lg text-base font-semibold text-white bg-orange-500 hover:bg-orange-600 transition duration-300 transform focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
-                  Start your 30-day free trial
-                </button>
-              </div>
-
-              {/* Terms */}
-              <p className="text-xs text-gray-500 pt-2 text-center">
-                By signing up, you agree to our
-                <a href="#" className="text-blue-600 hover:text-blue-500 ml-1">
-                  terms
-                </a>
-                and
-                <a href="#" className="text-blue-600 hover:text-blue-500 ml-1">
-                  privacy policy
-                </a>
-                .
-              </p>
-            </form>
-          </div>
-        </div>
-      </div>
     </div>
   );
-};
-
-export default SignUpPage;
+}
