@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { FaFacebook } from "react-icons/fa"; // Using react-icons for consistency
 
 // --- CONFIG ---
 const LOGO_CONFIG = {
@@ -12,7 +13,7 @@ const LOGO_CONFIG = {
 };
 
 const RIGHT_IMAGE_CONFIG = {
-  src: "/loginimg-1.jpeg",
+  src: "/login-img-1.jpeg",
   alt: "CRM Feature Visual",
   width: 800,
   height: 600,
@@ -50,26 +51,26 @@ const LoginPage = () => {
   );
 
   const FacebookIcon = () => (
-    <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.406.593 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24h-1.918c-1.504 0-1.796.715-1.796 1.763v2.313h3.588l-.467 3.622h-3.121V24h6.116c.73 0 1.324-.594 1.324-1.324V1.325C24 .593 23.406 0 22.675 0z" />
-    </svg>
+    // Replaced custom SVG with FaFacebook for a cleaner implementation if using react-icons
+    <FaFacebook className="w-5 h-5 mr-3 text-blue-600" />
+   
   );
 
   // --- RIGHT SIDE FEATURE VISUAL ---
   const RightSideFeatureVisual = () => (
     <div
-      className="hidden lg:flex w-2/3 relative animate-fadeInRight"
+      // ⚠️ Added h-full to take full vertical space
+      className="hidden lg:flex w-2/3 relative animate-fadeInRight h-full overflow-hidden"
       style={{
         backgroundImage: "url('/sign-up.jpeg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        // minHeight: "100vh",
+        // Removed min-height: 100vh as h-full is sufficient inside h-screen parent
       }}>
-      {/* Black overlay */}
       <div className="absolute inset-0 bg-black/80 z-0"></div>
 
-      {/* White card content */}
+      {/* Added py-10 for better vertical spacing and m-auto for centering */}
       <div className="relative z-10 bg-white p-6 md:p-10 rounded-xl shadow-xl max-w-2xl w-full text-center m-auto">
         <h5 className="text-sm font-semibold text-orange-500 mb-2 tracking-wider uppercase">
           SAY GOODBYE TO MANUAL DATA ENTRY
@@ -87,17 +88,28 @@ const LoginPage = () => {
             width={RIGHT_IMAGE_CONFIG.width}
             height={RIGHT_IMAGE_CONFIG.height}
             className="rounded-lg h-auto w-full max-w-full"
+            unoptimized
           />
         </div>
-       
       </div>
     </div>
   );
 
   return (
-    <div className="flex min-h-screen bg-white">
-      {/* Animation CSS */}
+    // ⚠️ CRITICAL CHANGE: Enforcing h-screen and w-screen to take up the entire viewport
+    <div className="flex items-stretch h-screen w-screen bg-white overflow-hidden">
       <style jsx global>{`
+        /* ⚠️ CRITICAL GLOBAL STYLES TO ENSURE NO SCROLLING */
+        html,
+        body,
+        #__next {
+          height: 100%;
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          overflow: hidden; /* Hides global scrollbars */
+        }
+
         @keyframes fadeInLeft {
           0% {
             opacity: 0;
@@ -127,15 +139,18 @@ const LoginPage = () => {
       `}</style>
 
       {/* LEFT SIDE LOGIN FORM */}
-      <div className="w-full lg:w-1/3 flex flex-col items-center justify-center p-10 animate-fadeInLeft">
-        <div className="max-w-md w-full">
+      {/* ⚠️ Added overflow-y-auto so the content scrolls INSIDE the column on small screens */}
+      <div className="w-full lg:w-1/3 flex flex-col items-center justify-center p-10 py-16 animate-fadeInLeft overflow-y-auto">
+        {/* Added margin to help center content vertically if scroll isn't needed */}
+        <div className="max-w-md w-full my-auto">
           {/* Logo */}
-          <div className="flex justify-center mb-10">
+          <div className="flex justify-center mb-8">
             <Image
               src={LOGO_CONFIG.src}
               alt={LOGO_CONFIG.alt}
               width={LOGO_CONFIG.width}
               height={LOGO_CONFIG.height}
+              unoptimized
             />
           </div>
 

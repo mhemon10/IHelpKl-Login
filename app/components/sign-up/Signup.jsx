@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { CheckCircle } from "lucide-react";
 import Image from "next/image";
+import { FaCheckCircle } from "react-icons/fa";
 
 // --- CONFIG ---
 const LOGO_CONFIG = {
@@ -48,7 +48,7 @@ const GoogleIcon = () => (
   </svg>
 );
 
-// --- Facebook Icon (Login page version) ---
+// --- Facebook Icon ---
 const FacebookIcon = () => (
   <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="currentColor">
     <path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.406.593 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24h-1.918c-1.504 0-1.796.715-1.796 1.763v2.313h3.588l-.467 3.622h-3.121V24h6.116c.73 0 1.324-.594 1.324-1.324V1.325C24 .593 23.406 0 22.675 0z" />
@@ -88,7 +88,8 @@ const LeftSideFeatureVisual = () => {
           alt={LEFT_IMAGE_CONFIG.alt}
           width={LEFT_IMAGE_CONFIG.width}
           height={LEFT_IMAGE_CONFIG.height}
-          className="object-cover"
+          className="object-contain"
+          unoptimized
         />
       </div>
 
@@ -105,7 +106,7 @@ const LeftSideFeatureVisual = () => {
             minWidth: "150px",
             minHeight: "150px",
           }}>
-          <CheckCircle className="w-8 h-8 flex-shrink-0 text-orange-600 mb-2" />
+          <FaCheckCircle className="w-8 h-8 flex-shrink-0 text-orange-600 mb-2" />
           <p className="text-[13px] font-semibold">{feature}</p>
         </div>
       ))}
@@ -120,25 +121,27 @@ export default function SignUpPage() {
   const handleSubmit = (e) => e.preventDefault();
 
   return (
-    <div className="flex items-stretch h-screen bg-white overflow-hidden">
+    // ⚠️ CRITICAL CHANGE: Using h-screen and w-full for strict viewport sizing
+    <div className="flex items-stretch h-screen w-full bg-white overflow-hidden">
       {/* LEFT FEATURES COLUMN */}
       <div className="hidden lg:flex h-full w-2/3">
         <LeftSideFeatureVisual />
       </div>
 
       {/* RIGHT FORM COLUMN */}
-      <div className="w-full lg:w-1/3 flex flex-col items-center justify-center p-10 animate-fadeInLeft">
-        <div className="max-w-md w-full">
-          <div className="flex justify-center mb-10">
+      <div className="w-full lg:w-1/3 flex flex-col items-center justify-center p-10 lg:py-16 animate-fadeInLeft overflow-y-auto">
+        <div className="max-w-md w-full my-auto">
+          <div className="flex justify-center mb-8 lg:mb-10">
             <Image
               src={LOGO_CONFIG.src}
               alt={LOGO_CONFIG.alt}
               width={LOGO_CONFIG.width}
               height={LOGO_CONFIG.height}
+              unoptimized
             />
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="text-sm font-medium text-gray-700 mb-1 block">
                 Industry
@@ -188,7 +191,7 @@ export default function SignUpPage() {
             </button>
 
             {/* SOCIAL LOGIN */}
-            <div className="flex flex-col space-y-3 mt-4">
+            <div className="flex flex-col space-y-3 pt-2">
               <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
                 <GoogleIcon /> Sign in with Google
               </button>
@@ -197,10 +200,10 @@ export default function SignUpPage() {
               </button>
             </div>
 
-            <p className="text-center text-sm text-gray-600 mt-4">
+            <p className="text-center text-sm text-gray-600 pt-2">
               Already have an account?{" "}
               <a
-                href="/"
+                href="/ "
                 className="text-orange-500 font-semibold hover:underline">
                 Log in
               </a>
@@ -209,8 +212,19 @@ export default function SignUpPage() {
         </div>
       </div>
 
-      {/* Animations */}
+      {/* Animations and Global Styles */}
       <style jsx>{`
+        /* This ensures no scrollbar on the main window */
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+          width: 100vw;
+          height: 100vh;
+          overflow: hidden;
+          box-sizing: border-box; /* Ensures padding/border doesn't cause overflow */
+        }
+
         @keyframes fadeInLeft {
           0% {
             opacity: 0;
@@ -241,6 +255,16 @@ export default function SignUpPage() {
 
       {/* Floating + Pop animation for features */}
       <style jsx global>{`
+        /* Global styles specific to the body/html */
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+        }
+
         @keyframes bubblePop {
           0% {
             opacity: 0;
