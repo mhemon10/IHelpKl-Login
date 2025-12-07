@@ -13,14 +13,14 @@ const LOGO_CONFIG = {
 };
 
 const LEFT_IMAGE_CONFIG = {
-  src: "/sign-up.jpeg",
+  src: "/signup-main.jpeg",
   alt: "Trial Feature Visual",
-  width: 700,
-  height: 700,
+  width: 600,
+  height: 600,
 };
 
 const BACKGROUND_IMAGE_CONFIG = {
-  src: "/bg-main.webp",
+  src: "/sign-up.jpeg",
 };
 
 // --- Google Icon ---
@@ -48,22 +48,20 @@ const GoogleIcon = () => (
   </svg>
 );
 
-// --- LEFT SECTION (BLOB REMOVED + CLEAN VERSION) ---
+// --- LEFT SECTION ---
 const LeftSideFeatureVisual = () => {
   const FEATURES = [
     "Unlimited everything, no credit card required.",
     "No limit on users. Invite the whole team.",
     "Use with confidence. Over 10,000 small businesses use LACRM.",
     "Private and secure.",
-    // "Your data belongs to you.",
   ];
 
   const featurePositions = [
-    "top-[21%] left-[5%]",
-    "top-[25%] right-[5%]",
-    "top-[65%] right-[70%]",
-    "top-[65%] right-[10%]",
-    "bottom-[20%] left-[40%]",
+    "top-[21%] left-[8%]",
+    "top-[25%] right-[10%]",
+    "top-[60%] right-[75%]",
+    "top-[60%] right-[10%]",
   ];
 
   return (
@@ -71,7 +69,6 @@ const LeftSideFeatureVisual = () => {
       className="w-full h-full p-8 md:p-16 flex items-center justify-center relative overflow-hidden"
       style={{
         backgroundImage: `url(${BACKGROUND_IMAGE_CONFIG.src})`,
-        backgroundSize: "cover",
         backgroundPosition: "center",
       }}>
       {/* DARK OVERLAY */}
@@ -84,34 +81,37 @@ const LeftSideFeatureVisual = () => {
           alt={LEFT_IMAGE_CONFIG.alt}
           width={LEFT_IMAGE_CONFIG.width}
           height={LEFT_IMAGE_CONFIG.height}
-          className="rounded-full object-cover shadow-2xl "
+          className="object-cover"
         />
       </div>
 
-      {/* FEATURE TEXT BUBBLES */}
+      {/* FLOATING CIRCLES */}
       {FEATURES.map((feature, index) => (
         <div
           key={index}
-          className={`absolute z-30 p-4 bg-white/70 rounded-lg shadow-xl text-gray-800 max-w-[220px] bubble-fadeIn backdrop-blur-sm ${featurePositions[index]}`}
+          className={`absolute z-30 bg-white/80 rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] text-gray-900 backdrop-blur-xl flex flex-col items-center justify-center text-center float-bubble ${featurePositions[index]}`}
           style={{
-            animationDelay: `${500 + index * 200}ms`,
-            animationFillMode: "forwards",
+            width: "150px",
+            height: "150px",
+            padding: "20px",
+            borderRadius: "50%",
+            animationDelay: `${300 + index * 200}ms`,
+            minWidth: "150px",
+            minHeight: "150px",
           }}>
-          <CheckCircle className="w-5 h-5 text-orange-600 mb-1" />
-          <p className="text-sm font-medium leading-tight">{feature}</p>
+          <CheckCircle className="w-8 h-8 flex-shrink-0 text-orange-600 mb-2" />
+          <p className="text-[13px] font-semibold">{feature}</p>
         </div>
       ))}
     </div>
   );
 };
 
-// --- SIGN UP PAGE ---
+// --- MAIN PAGE ---
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
+  const handleSubmit = (e) => e.preventDefault();
 
   return (
     <div className="flex items-stretch h-screen bg-white overflow-hidden">
@@ -133,8 +133,8 @@ export default function SignUpPage() {
             />
           </div>
 
+          {/* FORM */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* INDUSTRY */}
             <div>
               <label className="text-sm font-medium text-gray-700 mb-1 block">
                 Industry
@@ -147,7 +147,6 @@ export default function SignUpPage() {
               />
             </div>
 
-            {/* EMAIL */}
             <div>
               <label className="text-sm font-medium text-gray-700 mb-1 block">
                 Email
@@ -160,7 +159,6 @@ export default function SignUpPage() {
               />
             </div>
 
-            {/* PASSWORD */}
             <div>
               <label className="text-sm font-medium text-gray-700 mb-1 block">
                 Password
@@ -179,25 +177,15 @@ export default function SignUpPage() {
               </button>
             </div>
 
-            {/* SUBMIT */}
             <button
               type="submit"
               className="w-full py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
               Start your free trial
             </button>
 
-            {/* SOCIAL */}
-            <div className="flex flex-col space-y-3 mt-4">
-              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                <GoogleIcon /> Sign in with Google
-              </button>
-              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                <Facebook className="w-5 h-5 mr-3 text-blue-600" />
-                Sign in with Facebook
-              </button>
-            </div>
+            {/* SOCIAL LOGIN */}
+           
 
-            {/* LOGIN LINK */}
             <p className="text-center text-sm text-gray-600 mt-4">
               Already have an account?{" "}
               <a
@@ -210,50 +198,38 @@ export default function SignUpPage() {
         </div>
       </div>
 
-      {/* ANIMATIONS */}
+      {/* ✨ ANIMATIONS */}
       <style jsx>{`
         @keyframes fadeInLeft {
-          from {
+          0% {
             opacity: 0;
-            transform: translateX(-20px);
+            transform: translateX(-30px);
           }
-          to {
+          100% {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        @keyframes fadeInRight {
+          0% {
+            opacity: 0;
+            transform: translateX(30px);
+          }
+          100% {
             opacity: 1;
             transform: translateX(0);
           }
         }
         .animate-fadeInLeft {
-          animation: fadeInLeft 0.8s ease-out forwards;
-        }
-
-        @keyframes fadeInRight {
-          from {
-            opacity: 0;
-            transform: translateX(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
+          animation: fadeInLeft 0.7s ease-out forwards;
         }
         .animate-fadeInRight {
-          animation: fadeInRight 0.8s ease-out forwards;
-        }
-
-        @keyframes bubbleFade {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .bubble-fadeIn {
-          animation: bubbleFade 0.6s ease-out forwards;
+          animation: fadeInRight 0.7s ease-out forwards;
         }
       `}</style>
+
+      {/* FLOATING + POP ANIMATION (unchanged for FEATURES) */}
+    
     </div>
   );
 }
