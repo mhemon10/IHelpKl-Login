@@ -8,15 +8,15 @@ import Image from "next/image";
 const LOGO_CONFIG = {
   src: "/logo.svg",
   alt: "Company Logo",
-  width: 150,
-  height: 150,
+  width: 170,
+  height: 170,
 };
 
 const LEFT_IMAGE_CONFIG = {
   src: "/signup-main.jpeg",
   alt: "Trial Feature Visual",
-  width: 600,
-  height: 600,
+  width: 800,
+  height: 800,
 };
 
 const BACKGROUND_IMAGE_CONFIG = {
@@ -58,10 +58,10 @@ const LeftSideFeatureVisual = () => {
   ];
 
   const featurePositions = [
-    "top-[21%] left-[8%]",
-    "top-[25%] right-[10%]",
-    "top-[60%] right-[75%]",
-    "top-[60%] right-[10%]",
+    "top-[13%] left-[5%]",
+    "top-[15%] right-[5%]",
+    "top-[67%] right-[80%]",
+    "top-[67%] right-[5%]",
   ];
 
   return (
@@ -69,10 +69,12 @@ const LeftSideFeatureVisual = () => {
       className="w-full h-full p-8 md:p-16 flex items-center justify-center relative overflow-hidden"
       style={{
         backgroundImage: `url(${BACKGROUND_IMAGE_CONFIG.src})`,
+        backgroundSize: "cover",
         backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}>
       {/* DARK OVERLAY */}
-      <div className="absolute inset-0 bg-black/40 z-0"></div>
+      <div className="absolute inset-0 bg-black/80 z-0"></div>
 
       {/* MAIN IMAGE */}
       <div className="relative z-20 w-full max-w-3xl h-full max-h-[800px] flex items-center justify-center animate-fadeInRight">

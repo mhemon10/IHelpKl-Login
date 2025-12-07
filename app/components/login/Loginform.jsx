@@ -7,8 +7,8 @@ import Image from "next/image";
 const LOGO_CONFIG = {
   src: "/logo.svg",
   alt: "Company Logo",
-  width: 150,
-  height: 150,
+  width: 170,
+  height: 170,
 };
 
 const RIGHT_IMAGE_CONFIG = {
@@ -55,32 +55,31 @@ const LoginPage = () => {
     </svg>
   );
 
-  // --- RIGHT SIDE UPDATED (BACKGROUND IMAGE + BLACK OVERLAY) ---
+  // --- RIGHT SIDE FEATURE VISUAL ---
   const RightSideFeatureVisual = () => (
     <div
-      className="hidden lg:flex w-2/3 p-8 md:p-16 items-center justify-center animate-fadeInRight relative overflow-hidden"
+      className="hidden lg:flex w-2/3 relative animate-fadeInRight"
       style={{
         backgroundImage: "url('/sign-up.jpeg')",
-        // backgroundSize: "cover",
+        backgroundSize: "cover",
         backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        // minHeight: "100vh",
       }}>
-      {/* Black Overlay */}
-      <div className="absolute inset-0 bg-black/50 z-0"></div>
+      {/* Black overlay */}
+      <div className="absolute inset-0 bg-black/80 z-0"></div>
 
-      {/* White Card */}
-      <div className="relative z-10 bg-white p-6 md:p-10 rounded-xl shadow-xl max-w-xl w-full text-center">
+      {/* White card content */}
+      <div className="relative z-10 bg-white p-6 md:p-10 rounded-xl shadow-xl max-w-2xl w-full text-center m-auto">
         <h5 className="text-sm font-semibold text-orange-500 mb-2 tracking-wider uppercase">
           SAY GOODBYE TO MANUAL DATA ENTRY
         </h5>
-
         <h2 className="text-3xl font-bold text-gray-900 mb-6">
           Let your CRM work for you
         </h2>
-
         <p className="text-gray-600 max-w-sm mx-auto mb-10">
           With our form builder, collecting customer info is effortless.
         </p>
-
         <div className="flex justify-center">
           <Image
             src={RIGHT_IMAGE_CONFIG.src}
@@ -90,7 +89,6 @@ const LoginPage = () => {
             className="rounded-lg h-auto w-full max-w-full"
           />
         </div>
-
         <div className="mt-8 flex justify-center">
           <label className="flex items-center text-sm font-medium text-gray-700">
             <input
@@ -138,7 +136,7 @@ const LoginPage = () => {
         }
       `}</style>
 
-      {/* LEFT SIDE (35%) */}
+      {/* LEFT SIDE LOGIN FORM */}
       <div className="w-full lg:w-1/3 flex flex-col items-center justify-center p-10 animate-fadeInLeft">
         <div className="max-w-md w-full">
           {/* Logo */}
@@ -184,14 +182,14 @@ const LoginPage = () => {
               </button>
             </div>
 
-            {/* MAIN LOGIN BUTTON */}
+            {/* Login Button */}
             <button
               type="submit"
               className="w-full py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
               Login
             </button>
 
-            {/* SOCIAL LOGIN */}
+            {/* Social Login */}
             <div className="flex flex-col space-y-3 mt-4">
               <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
                 <GoogleIcon /> Sign in with Google
@@ -201,7 +199,7 @@ const LoginPage = () => {
               </button>
             </div>
 
-            {/* Sign up link */}
+            {/* Sign Up link */}
             <p className="text-center text-sm text-gray-600 mt-4">
               Don't have an account yet?{" "}
               <a
@@ -214,7 +212,7 @@ const LoginPage = () => {
         </div>
       </div>
 
-      {/* RIGHT SIDE */}
+      {/* RIGHT SIDE FEATURE VISUAL */}
       <RightSideFeatureVisual />
     </div>
   );
