@@ -3,8 +3,9 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { FaCheckCircle } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
 
-// --- CONFIG (No change) ---
+// --- CONFIG --- (No Change)
 const LOGO_CONFIG = {
   src: "/logo.svg",
   alt: "Company Logo",
@@ -23,7 +24,7 @@ const BACKGROUND_IMAGE_CONFIG = {
   src: "/sign-up.jpeg",
 };
 
-// --- Google Icon (No change) ---
+// --- Google Icon & Facebook Icon (No Change) ---
 const GoogleIcon = () => (
   <svg
     className="w-5 h-5 mr-3"
@@ -47,15 +48,11 @@ const GoogleIcon = () => (
     />
   </svg>
 );
-
-// --- Facebook Icon (No change) ---
 const FacebookIcon = () => (
-  <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.406.593 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24h-1.918c-1.504 0-1.796.715-1.796 1.763v2.313h3.588l-.467 3.622h-3.121V24h6.116c.73 0 1.324-.594 1.324-1.324V1.325C24 .593 23.406 0 22.675 0z" />
-  </svg>
+  <FaFacebook className="w-5 h-5 mr-3 text-blue-600" />
 );
 
-// --- Left Features Section (No change) ---
+// --- Left Features Section (UPDATED FOR RESPONSIVENESS) ---
 const LeftSideFeatureVisual = () => {
   const FEATURES = [
     "Unlimited everything, no credit card required.",
@@ -64,16 +61,9 @@ const LeftSideFeatureVisual = () => {
     "Private and secure.",
   ];
 
-  const featurePositions = [
-    "top-[13%] left-[5%]",
-    "top-[15%] right-[5%]",
-    "top-[67%] right-[80%]",
-    "top-[67%] right-[5%]",
-  ];
-
   return (
     <div
-      className="w-full h-full p-8 md:p-16 flex items-center justify-center relative overflow-hidden"
+      className="w-full h-full p-4 md:p-8 lg:p-16 flex items-center justify-center relative overflow-hidden"
       style={{
         backgroundImage: `url(${BACKGROUND_IMAGE_CONFIG.src})`,
         backgroundSize: "cover",
@@ -82,46 +72,110 @@ const LeftSideFeatureVisual = () => {
       }}>
       <div className="absolute inset-0 bg-black/80 z-0"></div>
 
-      <div className="relative z-20 w-full max-w-3xl h-full flex items-center justify-center animate-fadeInRight">
-        <Image
-          src={LEFT_IMAGE_CONFIG.src}
-          alt={LEFT_IMAGE_CONFIG.alt}
-          width={LEFT_IMAGE_CONFIG.width}
-          height={LEFT_IMAGE_CONFIG.height}
-          className="object-contain"
-          unoptimized
-        />
-      </div>
+      {/* Main container for image and bubbles */}
+      <div className="relative z-20 w-full max-w-6xl h-full flex items-center justify-center animate-fadeInRight">
+        {/* Image Container - Maintains aspect ratio */}
+        <div className="relative w-full h-full max-h-[90%] max-w-[90%] flex items-center justify-center">
+          <div className="relative w-full h-full max-w-[600px] max-h-[600px]">
+            {/* Main Image */}
+            <div className="relative w-full h-full">
+              <Image
+                src={LEFT_IMAGE_CONFIG.src}
+                alt={LEFT_IMAGE_CONFIG.alt}
+                layout="fill"
+                objectFit="contain"
+                className="drop-shadow-2xl"
+                unoptimized
+                priority
+              />
+            </div>
 
-      {FEATURES.map((feature, index) => (
-        <div
-          key={index}
-          className={`absolute z-30 bg-white/80 rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] text-gray-900 backdrop-blur-xl flex flex-col items-center justify-center text-center float-bubble ${featurePositions[index]}`}
-          style={{
-            width: "150px",
-            height: "150px",
-            padding: "20px",
-            borderRadius: "50%",
-            animationDelay: `${300 + index * 200}ms`,
-            minWidth: "150px",
-            minHeight: "150px",
-          }}>
-          <FaCheckCircle className="w-8 h-8 flex-shrink-0 text-orange-600 mb-2" />
-          <p className="text-[13px] font-semibold">{feature}</p>
+            {/* Bubbles positioned around the image */}
+            {/* Top Left Bubble */}
+            <div
+              className="absolute z-30 bg-white/90 rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] text-gray-900 backdrop-blur-xl flex flex-col items-center justify-center text-center float-bubble"
+              style={{
+                width: "clamp(120px, 10vw, 180px)",
+                height: "clamp(120px, 10vw, 180px)",
+                padding: "clamp(10px, 1.5vw, 20px)",
+                top: "5%",
+                left: "5%",
+                animationDelay: "300ms",
+                transform: "translate(-50%, -50%)",
+              }}>
+              <FaCheckCircle className="w-6 h-6 md:w-8 md:h-8 flex-shrink-0 text-orange-600 mb-1 md:mb-2" />
+              <p className="text-[10px] sm:text-xs md:text-sm font-semibold leading-tight">
+                {FEATURES[0]}
+              </p>
+            </div>
+
+            {/* Top Right Bubble */}
+            <div
+              className="absolute z-30 bg-white/90 rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] text-gray-900 backdrop-blur-xl flex flex-col items-center justify-center text-center float-bubble"
+              style={{
+                width: "clamp(120px, 10vw, 180px)",
+                height: "clamp(120px, 10vw, 180px)",
+                padding: "clamp(10px, 1.5vw, 20px)",
+                top: "5%",
+                right: "5%",
+                animationDelay: "500ms",
+                transform: "translate(50%, -50%)",
+              }}>
+              <FaCheckCircle className="w-6 h-6 md:w-8 md:h-8 flex-shrink-0 text-orange-600 mb-1 md:mb-2" />
+              <p className="text-[10px] sm:text-xs md:text-sm font-semibold leading-tight">
+                {FEATURES[1]}
+              </p>
+            </div>
+
+            {/* Bottom Left Bubble */}
+            <div
+              className="absolute z-30 bg-white/90 rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] text-gray-900 backdrop-blur-xl flex flex-col items-center justify-center text-center float-bubble"
+              style={{
+                width: "clamp(120px, 10vw, 180px)",
+                height: "clamp(120px, 10vw, 180px)",
+                padding: "clamp(10px, 1.5vw, 20px)",
+                bottom: "5%",
+                left: "5%",
+                animationDelay: "700ms",
+                transform: "translate(-50%, 50%)",
+              }}>
+              <FaCheckCircle className="w-6 h-6 md:w-8 md:h-8 flex-shrink-0 text-orange-600 mb-1 md:mb-2" />
+              <p className="text-[10px] sm:text-xs md:text-sm font-semibold leading-tight">
+                {FEATURES[2]}
+              </p>
+            </div>
+
+            {/* Bottom Right Bubble */}
+            <div
+              className="absolute z-30 bg-white/90 rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] text-gray-900 backdrop-blur-xl flex flex-col items-center justify-center text-center float-bubble"
+              style={{
+                width: "clamp(120px, 10vw, 180px)",
+                height: "clamp(120px, 10vw, 180px)",
+                padding: "clamp(10px, 1.5vw, 20px)",
+                bottom: "5%",
+                right: "5%",
+                animationDelay: "900ms",
+                transform: "translate(50%, 50%)",
+              }}>
+              <FaCheckCircle className="w-6 h-6 md:w-8 md:h-8 flex-shrink-0 text-orange-600 mb-1 md:mb-2" />
+              <p className="text-[10px] sm:text-xs md:text-sm font-semibold leading-tight">
+                {FEATURES[3]}
+              </p>
+            </div>
+          </div>
         </div>
-      ))}
+      </div>
     </div>
   );
 };
 
-// --- Main SignUp Page ---
+// --- Main SignUp Page (No Change) ---
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e) => e.preventDefault();
 
   return (
-    // Main Container
     <div className="flex items-stretch h-screen w-full bg-white overflow-hidden">
       {/* LEFT FEATURES COLUMN */}
       <div className="hidden lg:flex h-full w-2/3">
@@ -129,11 +183,9 @@ export default function SignUpPage() {
       </div>
 
       {/* RIGHT FORM COLUMN */}
-      {/* ⚠️ Changed p-10 to p-5 for mobile spacing, removed my-auto from inner div */}
-      <div className="w-full lg:w-1/3 flex flex-col items-center justify-start p-5 py-10 lg:p-10 lg:py-16 animate-fadeInLeft overflow-y-auto">
-        {/* Removed my-auto to prevent vertical centering from pushing content off-screen */}
+      <div className="w-full lg:w-1/3 flex flex-col items-center justify-center p-5 py-8 lg:p-10 lg:py-16 animate-fadeInLeft overflow-y-auto">
         <div className="max-w-md w-full">
-          <div className="flex justify-center mb-8 lg:mb-10 mt-0">
+          <div className="flex justify-center mb-6 lg:mb-10">
             <Image
               src={LOGO_CONFIG.src}
               alt={LOGO_CONFIG.alt}
@@ -143,7 +195,7 @@ export default function SignUpPage() {
             />
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="text-sm font-medium text-gray-700 mb-1 block">
                 Industry
@@ -202,8 +254,8 @@ export default function SignUpPage() {
               </button>
             </div>
 
-            {/* ⚠️ THIS LINK IS NOW VISIBLE ON MOBILE AS SCROLL IS ALLOWED WITHIN THIS COLUMN */}
-            <p className="text-center text-sm text-gray-600 pt-2 pb-4">
+            {/* Adjusted pt-3 and pb-6 for better visibility on mobile */}
+            <p className="text-center text-sm text-gray-600 pt-3 pb-6">
               Already have an account?{" "}
               <a
                 href="/ "
@@ -296,6 +348,30 @@ export default function SignUpPage() {
         .float-bubble {
           animation: bubblePop 0.6s ease-out forwards,
             floating 4s ease-in-out infinite;
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 1280px) {
+          .float-bubble p {
+            font-size: 11px;
+            line-height: 1.2;
+          }
+        }
+
+        @media (max-width: 1024px) {
+          .float-bubble {
+            width: 110px !important;
+            height: 110px !important;
+            padding: 12px !important;
+          }
+          .float-bubble p {
+            font-size: 10px;
+          }
+          .float-bubble svg {
+            width: 20px !important;
+            height: 20px !important;
+            margin-bottom: 4px !important;
+          }
         }
       `}</style>
     </div>
