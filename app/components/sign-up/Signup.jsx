@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { FaCheckCircle } from "react-icons/fa";
 
-// --- CONFIG ---
+// --- CONFIG (No change) ---
 const LOGO_CONFIG = {
   src: "/logo.svg",
   alt: "Company Logo",
@@ -23,7 +23,7 @@ const BACKGROUND_IMAGE_CONFIG = {
   src: "/sign-up.jpeg",
 };
 
-// --- Google Icon ---
+// --- Google Icon (No change) ---
 const GoogleIcon = () => (
   <svg
     className="w-5 h-5 mr-3"
@@ -48,14 +48,14 @@ const GoogleIcon = () => (
   </svg>
 );
 
-// --- Facebook Icon ---
+// --- Facebook Icon (No change) ---
 const FacebookIcon = () => (
   <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="currentColor">
     <path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.406.593 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24h-1.918c-1.504 0-1.796.715-1.796 1.763v2.313h3.588l-.467 3.622h-3.121V24h6.116c.73 0 1.324-.594 1.324-1.324V1.325C24 .593 23.406 0 22.675 0z" />
   </svg>
 );
 
-// --- Left Features Section ---
+// --- Left Features Section (No change) ---
 const LeftSideFeatureVisual = () => {
   const FEATURES = [
     "Unlimited everything, no credit card required.",
@@ -121,7 +121,7 @@ export default function SignUpPage() {
   const handleSubmit = (e) => e.preventDefault();
 
   return (
-    // ⚠️ CRITICAL CHANGE: Using h-screen and w-full for strict viewport sizing
+    // Main Container
     <div className="flex items-stretch h-screen w-full bg-white overflow-hidden">
       {/* LEFT FEATURES COLUMN */}
       <div className="hidden lg:flex h-full w-2/3">
@@ -129,9 +129,11 @@ export default function SignUpPage() {
       </div>
 
       {/* RIGHT FORM COLUMN */}
-      <div className="w-full lg:w-1/3 flex flex-col items-center justify-center p-10 lg:py-16 animate-fadeInLeft overflow-y-auto">
-        <div className="max-w-md w-full my-auto">
-          <div className="flex justify-center mb-8 lg:mb-10">
+      {/* ⚠️ Changed p-10 to p-5 for mobile spacing, removed my-auto from inner div */}
+      <div className="w-full lg:w-1/3 flex flex-col items-center justify-start p-5 py-10 lg:p-10 lg:py-16 animate-fadeInLeft overflow-y-auto">
+        {/* Removed my-auto to prevent vertical centering from pushing content off-screen */}
+        <div className="max-w-md w-full">
+          <div className="flex justify-center mb-8 lg:mb-10 mt-0">
             <Image
               src={LOGO_CONFIG.src}
               alt={LOGO_CONFIG.alt}
@@ -200,7 +202,8 @@ export default function SignUpPage() {
               </button>
             </div>
 
-            <p className="text-center text-sm text-gray-600 pt-2">
+            {/* ⚠️ THIS LINK IS NOW VISIBLE ON MOBILE AS SCROLL IS ALLOWED WITHIN THIS COLUMN */}
+            <p className="text-center text-sm text-gray-600 pt-2 pb-4">
               Already have an account?{" "}
               <a
                 href="/ "
@@ -222,7 +225,7 @@ export default function SignUpPage() {
           width: 100vw;
           height: 100vh;
           overflow: hidden;
-          box-sizing: border-box; /* Ensures padding/border doesn't cause overflow */
+          box-sizing: border-box;
         }
 
         @keyframes fadeInLeft {
