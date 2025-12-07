@@ -89,17 +89,7 @@ const LoginPage = () => {
             className="rounded-lg h-auto w-full max-w-full"
           />
         </div>
-        <div className="mt-8 flex justify-center">
-          <label className="flex items-center text-sm font-medium text-gray-700">
-            <input
-              type="checkbox"
-              className="h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
-            />
-            <span className="ml-2">
-              Click here to be taken to the form builder after you log in
-            </span>
-          </label>
-        </div>
+       
       </div>
     </div>
   );

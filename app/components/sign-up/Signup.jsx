@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { CheckCircle, Facebook } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import Image from "next/image";
 
 // --- CONFIG ---
@@ -48,7 +48,14 @@ const GoogleIcon = () => (
   </svg>
 );
 
-// --- LEFT SECTION ---
+// --- Facebook Icon (Login page version) ---
+const FacebookIcon = () => (
+  <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.406.593 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24h-1.918c-1.504 0-1.796.715-1.796 1.763v2.313h3.588l-.467 3.622h-3.121V24h6.116c.73 0 1.324-.594 1.324-1.324V1.325C24 .593 23.406 0 22.675 0z" />
+  </svg>
+);
+
+// --- Left Features Section ---
 const LeftSideFeatureVisual = () => {
   const FEATURES = [
     "Unlimited everything, no credit card required.",
@@ -73,11 +80,9 @@ const LeftSideFeatureVisual = () => {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}>
-      {/* DARK OVERLAY */}
       <div className="absolute inset-0 bg-black/80 z-0"></div>
 
-      {/* MAIN IMAGE */}
-      <div className="relative z-20 w-full max-w-3xl h-full max-h-[800px] flex items-center justify-center animate-fadeInRight">
+      <div className="relative z-20 w-full max-w-3xl h-full flex items-center justify-center animate-fadeInRight">
         <Image
           src={LEFT_IMAGE_CONFIG.src}
           alt={LEFT_IMAGE_CONFIG.alt}
@@ -87,7 +92,6 @@ const LeftSideFeatureVisual = () => {
         />
       </div>
 
-      {/* FLOATING CIRCLES */}
       {FEATURES.map((feature, index) => (
         <div
           key={index}
@@ -109,7 +113,7 @@ const LeftSideFeatureVisual = () => {
   );
 };
 
-// --- MAIN PAGE ---
+// --- Main SignUp Page ---
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -117,15 +121,14 @@ export default function SignUpPage() {
 
   return (
     <div className="flex items-stretch h-screen bg-white overflow-hidden">
-      {/* LEFT COLUMN */}
+      {/* LEFT FEATURES COLUMN */}
       <div className="hidden lg:flex h-full w-2/3">
         <LeftSideFeatureVisual />
       </div>
 
-      {/* RIGHT COLUMN */}
+      {/* RIGHT FORM COLUMN */}
       <div className="w-full lg:w-1/3 flex flex-col items-center justify-center p-10 animate-fadeInLeft">
         <div className="max-w-md w-full">
-          {/* LOGO */}
           <div className="flex justify-center mb-10">
             <Image
               src={LOGO_CONFIG.src}
@@ -135,7 +138,6 @@ export default function SignUpPage() {
             />
           </div>
 
-          {/* FORM */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="text-sm font-medium text-gray-700 mb-1 block">
@@ -191,15 +193,14 @@ export default function SignUpPage() {
                 <GoogleIcon /> Sign in with Google
               </button>
               <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                <Facebook className="w-5 h-5 mr-3 text-blue-600" />
-                Sign in with Facebook
+                <FacebookIcon /> Sign in with Facebook
               </button>
             </div>
 
             <p className="text-center text-sm text-gray-600 mt-4">
               Already have an account?{" "}
               <a
-                href="/ "
+                href="/"
                 className="text-orange-500 font-semibold hover:underline">
                 Log in
               </a>
@@ -208,7 +209,7 @@ export default function SignUpPage() {
         </div>
       </div>
 
-      {/* ✨ ANIMATIONS */}
+      {/* Animations */}
       <style jsx>{`
         @keyframes fadeInLeft {
           0% {
@@ -238,7 +239,7 @@ export default function SignUpPage() {
         }
       `}</style>
 
-      {/* FLOATING + POP ANIMATION (unchanged for FEATURES) */}
+      {/* Floating + Pop animation for features */}
       <style jsx global>{`
         @keyframes bubblePop {
           0% {
@@ -254,7 +255,6 @@ export default function SignUpPage() {
             transform: scale(1);
           }
         }
-
         @keyframes floating {
           0% {
             transform: translateY(0px);
@@ -266,7 +266,6 @@ export default function SignUpPage() {
             transform: translateY(0px);
           }
         }
-
         .float-bubble {
           animation: bubblePop 0.6s ease-out forwards,
             floating 4s ease-in-out infinite;
