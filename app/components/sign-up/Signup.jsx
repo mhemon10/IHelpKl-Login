@@ -184,7 +184,15 @@ export default function SignUpPage() {
             </button>
 
             {/* SOCIAL LOGIN */}
-           
+            <div className="flex flex-col space-y-3 mt-4">
+              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                <GoogleIcon /> Sign in with Google
+              </button>
+              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                <Facebook className="w-5 h-5 mr-3 text-blue-600" />
+                Sign in with Facebook
+              </button>
+            </div>
 
             <p className="text-center text-sm text-gray-600 mt-4">
               Already have an account?{" "}
@@ -229,7 +237,39 @@ export default function SignUpPage() {
       `}</style>
 
       {/* FLOATING + POP ANIMATION (unchanged for FEATURES) */}
-    
+      <style jsx global>{`
+        @keyframes bubblePop {
+          0% {
+            opacity: 0;
+            transform: scale(0.5);
+          }
+          60% {
+            opacity: 1;
+            transform: scale(1.1);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes floating {
+          0% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-12px);
+          }
+          100% {
+            transform: translateY(0px);
+          }
+        }
+
+        .float-bubble {
+          animation: bubblePop 0.6s ease-out forwards,
+            floating 4s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 }
