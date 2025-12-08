@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { FaFacebook } from "react-icons/fa"; // Using react-icons for consistency
+import { FaFacebook } from "react-icons/fa"; 
 
 // --- CONFIG ---
 const LOGO_CONFIG = {
@@ -51,7 +51,7 @@ const LoginPage = () => {
   );
 
   const FacebookIcon = () => (
-    // Replaced custom SVG with FaFacebook for a cleaner implementation if using react-icons
+
     <FaFacebook className="w-5 h-5 mr-3 text-blue-600" />
    
   );
@@ -59,7 +59,7 @@ const LoginPage = () => {
   // --- RIGHT SIDE FEATURE VISUAL ---
   const RightSideFeatureVisual = () => (
     <div
-      // ⚠️ Added h-full to take full vertical space
+
       className="hidden lg:flex w-2/3 relative animate-fadeInRight h-full overflow-hidden"
       style={{
         backgroundImage: "url('/sign-up.jpeg')",
@@ -70,7 +70,7 @@ const LoginPage = () => {
       }}>
       <div className="absolute inset-0 bg-black/80 z-0"></div>
 
-      {/* Added py-10 for better vertical spacing and m-auto for centering */}
+
       <div className="relative z-10 bg-white p-6 md:p-10 rounded-xl shadow-xl max-w-2xl w-full text-center m-auto">
         <h5 className="text-sm font-semibold text-orange-500 mb-2 tracking-wider uppercase">
           SAY GOODBYE TO MANUAL DATA ENTRY
@@ -139,9 +139,9 @@ const LoginPage = () => {
       `}</style>
 
       {/* LEFT SIDE LOGIN FORM */}
-      {/* ⚠️ Added overflow-y-auto so the content scrolls INSIDE the column on small screens */}
+
       <div className="w-full lg:w-1/3 flex flex-col items-center justify-center p-10 py-16 animate-fadeInLeft overflow-y-auto">
-        {/* Added margin to help center content vertically if scroll isn't needed */}
+
         <div className="max-w-md w-full my-auto">
           {/* Logo */}
           <div className="flex justify-center mb-8">

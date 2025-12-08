@@ -24,7 +24,8 @@ const BACKGROUND_IMAGE_CONFIG = {
   src: "/sign-up.jpeg",
 };
 
-// --- Google Icon & Facebook Icon (No Change) ---
+
+// ... (Icon components remain the same)
 const GoogleIcon = () => (
   <svg
     className="w-5 h-5 mr-3"
@@ -52,7 +53,7 @@ const FacebookIcon = () => (
   <FaFacebook className="w-5 h-5 mr-3 text-blue-600" />
 );
 
-// --- Left Features Section (UPDATED FOR RESPONSIVENESS) ---
+// --- Left Features Section (FIXED FOR RESPONSIVENESS AND AESTHETICS) ---
 const LeftSideFeatureVisual = () => {
   const FEATURES = [
     "Unlimited everything, no credit card required.",
@@ -61,9 +62,21 @@ const LeftSideFeatureVisual = () => {
     "Private and secure.",
   ];
 
+
+  const featurePositions = [
+
+    "top-12 left-12",
+
+    "top-12 right-12",
+
+    "bottom-12 left-12",
+
+    "bottom-12 right-12",
+  ];
+
   return (
     <div
-      className="w-full h-full p-4 md:p-8 lg:p-16 flex items-center justify-center relative overflow-hidden"
+      className="w-full h-full p-8 md:p-16 flex items-center justify-center relative overflow-hidden"
       style={{
         backgroundImage: `url(${BACKGROUND_IMAGE_CONFIG.src})`,
         backgroundSize: "cover",
@@ -72,97 +85,50 @@ const LeftSideFeatureVisual = () => {
       }}>
       <div className="absolute inset-0 bg-black/80 z-0"></div>
 
-      {/* Main container for image and bubbles */}
-      <div className="relative z-20 w-full max-w-6xl h-full flex items-center justify-center animate-fadeInRight">
-        {/* Image Container - Maintains aspect ratio */}
-        <div className="relative w-full h-full max-h-[90%] max-w-[90%] flex items-center justify-center">
-          <div className="relative w-full h-full max-w-[600px] max-h-[600px]">
-            {/* Main Image */}
-            <div className="relative w-full h-full">
-              <Image
-                src={LEFT_IMAGE_CONFIG.src}
-                alt={LEFT_IMAGE_CONFIG.alt}
-                layout="fill"
-                objectFit="contain"
-                className="drop-shadow-2xl"
-                unoptimized
-                priority
-              />
-            </div>
+      {/* Wrapper to center the Image's visual space */}
+      <div
+        className="relative z-20 w-full max-w-3xl h-full flex items-center justify-center animate-fadeInRight"
+        id="ImageAndBubbleWrapper">
+        {/* New Inner Container (relative w-full h-full) to align Image and Bubbles */}
+        <div className="relative w-full h-full ">
+          <Image
+            src={LEFT_IMAGE_CONFIG.src}
+            alt={LEFT_IMAGE_CONFIG.alt}
+            layout="fill"
+            objectFit="contain"
+            // className="object-cover"
+            unoptimized
+          />
 
-            {/* Bubbles positioned around the image */}
-            {/* Top Left Bubble */}
+          {FEATURES.map((feature, index) => (
             <div
-              className="absolute z-30 bg-white/90 rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] text-gray-900 backdrop-blur-xl flex flex-col items-center justify-center text-center float-bubble"
+              key={index}
+              // Apply stable corner position classes for aesthetic offset
+              className={`absolute z-30 bg-white/80 rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] text-gray-900 backdrop-blur-xl flex flex-col items-center justify-center text-center float-bubble ${featurePositions[index]}`}
               style={{
-                width: "clamp(120px, 10vw, 180px)",
-                height: "clamp(120px, 10vw, 180px)",
-                padding: "clamp(10px, 1.5vw, 20px)",
-                top: "5%",
-                left: "5%",
-                animationDelay: "300ms",
-                transform: "translate(-50%, -50%)",
+                width: "150px",
+                height: "150px",
+                padding: "20px",
+                borderRadius: "50%",
+                animationDelay: `${300 + index * 200}ms`,
+                minWidth: "150px",
+                minHeight: "150px",
+                // Adjusting transform origin slightly to make the positioning look cleaner.
+                transform: `translate(${
+                  featurePositions[index].includes("left") ? "-50%" : "50%"
+                }, ${
+                  featurePositions[index].includes("top") ? "-50%" : "50%"
+                })`,
+                // We are now manually calculating the translate to center the bubble on the offset
+                // Top Left: translate(-50%, -50%)
+                // Top Right: translate(50%, -50%)
+                // Bottom Left: translate(-50%, 50%)
+                // Bottom Right: translate(50%, 50%)
               }}>
-              <FaCheckCircle className="w-6 h-6 md:w-8 md:h-8 flex-shrink-0 text-orange-600 mb-1 md:mb-2" />
-              <p className="text-[10px] sm:text-xs md:text-sm font-semibold leading-tight">
-                {FEATURES[0]}
-              </p>
+              <FaCheckCircle className="w-8 h-8 flex-shrink-0 text-orange-600 mb-2" />
+              <p className="text-[13px] font-semibold">{feature}</p>
             </div>
-
-            {/* Top Right Bubble */}
-            <div
-              className="absolute z-30 bg-white/90 rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] text-gray-900 backdrop-blur-xl flex flex-col items-center justify-center text-center float-bubble"
-              style={{
-                width: "clamp(120px, 10vw, 180px)",
-                height: "clamp(120px, 10vw, 180px)",
-                padding: "clamp(10px, 1.5vw, 20px)",
-                top: "5%",
-                right: "5%",
-                animationDelay: "500ms",
-                transform: "translate(50%, -50%)",
-              }}>
-              <FaCheckCircle className="w-6 h-6 md:w-8 md:h-8 flex-shrink-0 text-orange-600 mb-1 md:mb-2" />
-              <p className="text-[10px] sm:text-xs md:text-sm font-semibold leading-tight">
-                {FEATURES[1]}
-              </p>
-            </div>
-
-            {/* Bottom Left Bubble */}
-            <div
-              className="absolute z-30 bg-white/90 rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] text-gray-900 backdrop-blur-xl flex flex-col items-center justify-center text-center float-bubble"
-              style={{
-                width: "clamp(120px, 10vw, 180px)",
-                height: "clamp(120px, 10vw, 180px)",
-                padding: "clamp(10px, 1.5vw, 20px)",
-                bottom: "5%",
-                left: "5%",
-                animationDelay: "700ms",
-                transform: "translate(-50%, 50%)",
-              }}>
-              <FaCheckCircle className="w-6 h-6 md:w-8 md:h-8 flex-shrink-0 text-orange-600 mb-1 md:mb-2" />
-              <p className="text-[10px] sm:text-xs md:text-sm font-semibold leading-tight">
-                {FEATURES[2]}
-              </p>
-            </div>
-
-            {/* Bottom Right Bubble */}
-            <div
-              className="absolute z-30 bg-white/90 rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] text-gray-900 backdrop-blur-xl flex flex-col items-center justify-center text-center float-bubble"
-              style={{
-                width: "clamp(120px, 10vw, 180px)",
-                height: "clamp(120px, 10vw, 180px)",
-                padding: "clamp(10px, 1.5vw, 20px)",
-                bottom: "5%",
-                right: "5%",
-                animationDelay: "900ms",
-                transform: "translate(50%, 50%)",
-              }}>
-              <FaCheckCircle className="w-6 h-6 md:w-8 md:h-8 flex-shrink-0 text-orange-600 mb-1 md:mb-2" />
-              <p className="text-[10px] sm:text-xs md:text-sm font-semibold leading-tight">
-                {FEATURES[3]}
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
@@ -267,7 +233,7 @@ export default function SignUpPage() {
         </div>
       </div>
 
-      {/* Animations and Global Styles */}
+      {/* Animations and Global Styles (No functional changes here) */}
       <style jsx>{`
         /* This ensures no scrollbar on the main window */
         html,
@@ -348,30 +314,6 @@ export default function SignUpPage() {
         .float-bubble {
           animation: bubblePop 0.6s ease-out forwards,
             floating 4s ease-in-out infinite;
-        }
-
-        /* Responsive adjustments for smaller screens */
-        @media (max-width: 1280px) {
-          .float-bubble p {
-            font-size: 11px;
-            line-height: 1.2;
-          }
-        }
-
-        @media (max-width: 1024px) {
-          .float-bubble {
-            width: 110px !important;
-            height: 110px !important;
-            padding: 12px !important;
-          }
-          .float-bubble p {
-            font-size: 10px;
-          }
-          .float-bubble svg {
-            width: 20px !important;
-            height: 20px !important;
-            margin-bottom: 4px !important;
-          }
         }
       `}</style>
     </div>
