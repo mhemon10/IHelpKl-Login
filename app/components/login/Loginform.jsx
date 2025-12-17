@@ -1,150 +1,45 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { FaFacebook } from "react-icons/fa"; 
+import { FaEye, FaEyeSlash, FaEnvelope, FaLock } from "react-icons/fa";
+import Link from "next/link";
 
 // --- CONFIG ---
 const LOGO_CONFIG = {
   src: "/logo.svg",
-  alt: "Company Logo",
-  width: 170,
-  height: 170,
+  alt: "ihelp logo",
+  width: 140,
+  height: 50,
 };
 
-const RIGHT_IMAGE_CONFIG = {
-  src: "/login-img-1.jpeg",
-  alt: "CRM Feature Visual",
-  width: 800,
-  height: 600,
-};
+const DASHBOARD_BG = "/dashboard-bg.png";
+const FEATURE_PREVIEW = "/login-img-1.jpeg";
 
-// MAIN COMPONENT
-const LoginPage = () => {
+export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [offset, setOffset] = useState(0);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Login attempt...");
-  };
+  useEffect(() => {
+    const handleWheel = (e) => {
+      setOffset((prev) => {
+       
+        const newOffset = prev + e.deltaY * 0.15;
+        
+        return Math.max(0, Math.min(newOffset, 800));
+      });
+    };
 
-  // --- Icons ---
-  const GoogleIcon = () => (
-    <svg className="w-5 h-5 mr-3" viewBox="0 0 533.5 544.3">
-      <path
-        d="M533.5 272.2c0-18.7-1.4-37.1-4.7-55.1H266.7v104.2h149.2c-6.6 34.3-25.9 63.8-54.8 85.8v68.3h88.6c51.9-47.8 82-117.8 82-203.2z"
-        fill="#4285F4"
-      />
-      <path
-        d="M266.7 544.3c71.6 0 131.8-23.7 175.7-64.4l-88.6-68.3c-24.5 16.5-55.8 25.8-87.1 25.8-67.6 0-124.9-45.7-145.4-106.9H32.4v70.2c44.1 87.5 137.9 146.9 234.3 146.9z"
-        fill="#34A853"
-      />
-      <path
-        d="M121.3 320.1c-4.9-14.5-7.7-29.7-7.7-44.8s2.8-30.3 7.7-44.8V159.5H32.4c-15.9 31.5-24.5 68.4-24.5 108.8 0 40.4 8.6 77.3 24.5 108.8l88.9-70.2z"
-        fill="#FBBC05"
-      />
-      <path
-        d="M266.7 104.2c39.9 0 75.9 13.8 103.9 40.5l78.7-78.7c-48.4-45.5-112.5-67.1-182.7-67.1C128.8 0 35 59.4 0 146.9l88.9 70.2c20.5-61.2 77.8-106.9 145.4-106.9z"
-        fill="#EA4335"
-      />
-    </svg>
-  );
-
-  const FacebookIcon = () => (
-
-    <FaFacebook className="w-5 h-5 mr-3 text-blue-600" />
-   
-  );
-
-  // --- RIGHT SIDE FEATURE VISUAL ---
-  const RightSideFeatureVisual = () => (
-    <div
-
-      className="hidden lg:flex w-2/3 relative animate-fadeInRight h-full overflow-hidden"
-      style={{
-        backgroundImage: "url('/sign-up.jpeg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        // Removed min-height: 100vh as h-full is sufficient inside h-screen parent
-      }}>
-      <div className="absolute inset-0 bg-black/80 z-0"></div>
-
-
-      <div className="relative z-10 bg-white p-6 md:p-10 rounded-xl shadow-xl max-w-2xl w-full text-center m-auto">
-        <h5 className="text-sm font-semibold text-orange-500 mb-2 tracking-wider uppercase">
-          SAY GOODBYE TO MANUAL DATA ENTRY
-        </h5>
-        <h2 className="text-3xl font-bold text-gray-900 mb-6">
-          Let your CRM work for you
-        </h2>
-        <p className="text-gray-600 max-w-sm mx-auto mb-10">
-          With our form builder, collecting customer info is effortless.
-        </p>
-        <div className="flex justify-center">
-          <Image
-            src={RIGHT_IMAGE_CONFIG.src}
-            alt={RIGHT_IMAGE_CONFIG.alt}
-            width={RIGHT_IMAGE_CONFIG.width}
-            height={RIGHT_IMAGE_CONFIG.height}
-            className="rounded-lg h-auto w-full max-w-full"
-            unoptimized
-          />
-        </div>
-      </div>
-    </div>
-  );
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    return () => window.removeEventListener("wheel", handleWheel);
+  }, []);
 
   return (
-    // ⚠️ CRITICAL CHANGE: Enforcing h-screen and w-screen to take up the entire viewport
-    <div className="flex items-stretch h-screen w-screen bg-white overflow-hidden">
-      <style jsx global>{`
-        /* ⚠️ CRITICAL GLOBAL STYLES TO ENSURE NO SCROLLING */
-        html,
-        body,
-        #__next {
-          height: 100%;
-          width: 100%;
-          margin: 0;
-          padding: 0;
-          overflow: hidden; /* Hides global scrollbars */
-        }
-
-        @keyframes fadeInLeft {
-          0% {
-            opacity: 0;
-            transform: translateX(-30px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        @keyframes fadeInRight {
-          0% {
-            opacity: 0;
-            transform: translateX(30px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        .animate-fadeInLeft {
-          animation: fadeInLeft 0.7s ease-out forwards;
-        }
-        .animate-fadeInRight {
-          animation: fadeInRight 0.7s ease-out forwards;
-        }
-      `}</style>
-
-      {/* LEFT SIDE LOGIN FORM */}
-
-      <div className="w-full lg:w-1/3 flex flex-col items-center justify-center p-10 py-16 animate-fadeInLeft overflow-y-auto">
-
-        <div className="max-w-md w-full my-auto">
-          {/* Logo */}
-          <div className="flex justify-center mb-8">
+    <div className="flex h-screen w-full bg-white overflow-hidden font-sans relative">
+      {/* 🔴 LEFT SIDE: LOGIN FORM - FIXED */}
+      <div className="w-full lg:w-[32%] h-full bg-white z-50 flex flex-col items-center justify-center px-8 xl:px-14 border-r border-gray-100 shadow-2xl relative">
+        <div className="w-full max-w-sm">
+          <div className="flex flex-col items-center mb-8">
             <Image
               src={LOGO_CONFIG.src}
               alt={LOGO_CONFIG.alt}
@@ -152,75 +47,161 @@ const LoginPage = () => {
               height={LOGO_CONFIG.height}
               unoptimized
             />
+            <h2 className="text-[32px] font-bold text-[#646c79] mt-4">
+              Sign in
+            </h2>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email */}
+          <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">
-                Email
+              <label className="flex items-center text-[15px] font-semibold text-[#646c79] mb-2">
+                <FaEnvelope className="mr-2 text-gray-400" size={14} /> Enter
+                your email <span className="text-orange-500 ml-1">*</span>
               </label>
               <input
                 type="email"
-                required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:outline-none"
-                placeholder="Enter your email"
+                defaultValue="tenant1@ihelpkl.com"
+                className="w-full px-4 py-2.5 border border-gray-400 rounded-sm outline-none text-[15px] text-gray-700 focus:ring-1 focus:ring-orange-400"
               />
             </div>
 
-            {/* Password */}
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">
-                Password
+              <label className="flex items-center text-[15px] font-semibold text-[#646c79] mb-2">
+                <FaLock className="mr-2 text-gray-400" size={14} /> Enter your
+                password <span className="text-orange-500 ml-1">*</span>
               </label>
-              <input
-                type={showPassword ? "text" : "password"}
-                required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:outline-none"
-                placeholder="Enter your password"
-              />
-              <button
-                type="button"
-                className="text-orange-500 text-sm mt-1"
-                onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? "Hide" : "Show"} Password
-              </button>
+              <div className="relative flex">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  defaultValue=".........."
+                  className="w-full px-4 py-2.5 border border-gray-400 rounded-l-sm outline-none text-[15px] text-gray-700 border-r-0"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="bg-black text-white px-4 flex items-center justify-center rounded-r-sm hover:bg-gray-800 transition-colors">
+                  {showPassword ? (
+                    <FaEyeSlash size={18} />
+                  ) : (
+                    <FaEye size={18} />
+                  )}
+                </button>
+              </div>
             </div>
 
-            {/* Login Button */}
-            <button
-              type="submit"
-              className="w-full py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
-              Login
+            <div className="flex items-center justify-between text-[14px] text-[#646c79]">
+              <label className="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="mr-2 w-4 h-4 accent-orange-500"
+                />{" "}
+                Remember me
+              </label>
+              <a href="#" className="text-[#e68a3e] font-bold hover:underline">
+                Forgot password
+              </a>
+            </div>
+
+            <p className="text-[11px] text-[#646c79] text-center leading-relaxed">
+              By signing up, you agree to the{" "}
+              <span className="font-bold text-black cursor-pointer">
+                Terms of Service
+              </span>{" "}
+              and acknowledge our{" "}
+              <span className="font-bold text-black cursor-pointer">
+                Privacy Policy
+              </span>
+            </p>
+
+            <button className="w-full py-3 bg-[#e68a3e] hover:bg-[#d47930] text-white font-bold rounded-md shadow-md text-lg transition-all uppercase tracking-wide">
+              Sign in
             </button>
 
-            {/* Social Login */}
-            <div className="flex flex-col space-y-3 mt-4">
-              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                <GoogleIcon /> Sign in with Google
-              </button>
-              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                <FacebookIcon /> Sign in with Facebook
-              </button>
-            </div>
-
-            {/* Sign Up link */}
-            <p className="text-center text-sm text-gray-600 mt-4">
-              Don't have an account yet?{" "}
-              <a
-                href="/signup"
-                className="text-orange-500 font-semibold hover:underline">
-                Start a free trial
-              </a>
-            </p>
+            <button className="w-full flex items-center justify-center py-2.5 border border-gray-200 rounded-md text-gray-700 font-bold text-[15px] shadow-sm hover:bg-gray-50 transition-all">
+              <img
+                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                alt="google"
+                className="w-5 h-5 mr-3"
+              />{" "}
+              Sign in with Google
+            </button>
           </form>
+
+          <div className="mt-10 text-center text-[#646c79] font-bold">
+            <p className="text-[14px] mb-4">
+              Do not have account?{" "}
+              <Link href="/register">
+                <span className="text-black font-extrabold cursor-pointer hover:underline">
+                  Start a free trial
+                </span>
+              </Link>
+            </p>
+            <div className="flex justify-center space-x-6 text-[13px]">
+              <span className="hover:text-black cursor-pointer">Home</span>
+              <span className="hover:text-black cursor-pointer">Privacy</span>
+              <span className="hover:text-black cursor-pointer">Terms</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* RIGHT SIDE FEATURE VISUAL */}
-      <RightSideFeatureVisual />
+      {/* 🟢 RIGHT SIDE: BACKGROUND IMAGE  */}
+      <div className="hidden lg:block relative flex-1 h-full bg-[#1a1a1a] overflow-hidden z-0">
+        {/* Background Image Wrapper */}
+        <div
+          className="absolute w-full h-[200vh] top-0 left-0 transition-transform duration-150 ease-out"
+          style={{
+            transform: `translate3d(0, ${-offset}px, 0)`,
+            willChange: "transform",
+          }}>
+          <img
+            src={DASHBOARD_BG}
+            alt="Dashboard Background"
+            className="w-full h-full object-cover object-top opacity-40"
+          />
+        </div>
+
+        {/* Center Modal Card - Fixed on top */}
+        <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none px-12">
+          <div className="pointer-events-auto w-full max-w-[700px] bg-white rounded-2xl shadow-2xl p-12 text-center animate-fadeInUp">
+            <h5 className="text-[#e68a3e] font-bold text-xs uppercase tracking-widest mb-4">
+              SAY GOODBYE TO MANUAL DATA ENTRY
+            </h5>
+            <h1 className="text-[#333] text-[36px] font-extrabold mb-4 leading-tight">
+              Let your CRM work for you
+            </h1>
+            <p className="text-gray-500 text-lg mb-10 leading-relaxed">
+              With our form builder, collecting customer info is effortless.
+            </p>
+            <div className="border border-gray-100 rounded-xl overflow-hidden shadow-lg">
+              <img
+                src={FEATURE_PREVIEW}
+                alt="Dashboard Preview"
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style jsx global>{`
+        body {
+          overflow: hidden;
+        }
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeInUp {
+          animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+      `}</style>
     </div>
   );
-};
-
-export default LoginPage;
+}

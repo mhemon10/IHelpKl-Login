@@ -1,157 +1,90 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { FaCheckCircle } from "react-icons/fa";
-import { FaFacebook } from "react-icons/fa";
+import {
+  FaEye,
+  FaEyeSlash,
+  FaBuilding,
+  FaEnvelope,
+  FaLock,
+} from "react-icons/fa";
+import Link from "next/link";
 
-// --- CONFIG --- (No Change)
+// --- CONFIG ---
 const LOGO_CONFIG = {
   src: "/logo.svg",
-  alt: "Company Logo",
-  width: 170,
-  height: 170,
+  alt: "ihelp logo",
+  width: 140,
+  height: 50,
 };
 
-const LEFT_IMAGE_CONFIG = {
-  src: "/signup-main.jpeg",
-  alt: "Trial Feature Visual",
-  width: 800,
-  height: 800,
-};
+const DASHBOARD_PREVIEW = "/dashboard-bg.png";
+const MODAL_IMAGE = "/signup-main.jpeg";
 
-const BACKGROUND_IMAGE_CONFIG = {
-  src: "/sign-up.jpeg",
-};
-
-
-// ... (Icon components remain the same)
-const GoogleIcon = () => (
-  <svg
-    className="w-5 h-5 mr-3"
-    viewBox="0 0 533.5 544.3"
-    xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M533.5 272.2c0-18.7-1.4-37.1-4.7-55.1H266.7v104.2h149.2c-6.6 34.3-25.9 63.8-54.8 85.8v68.3h88.6c51.9-47.8 82-117.8 82-203.2z"
-      fill="#4285F4"
-    />
-    <path
-      d="M266.7 544.3c71.6 0 131.8-23.7 175.7-64.4l-88.6-68.3c-24.5 16.5-55.8 25.8-87.1 25.8-67.6 0-124.9-45.7-145.4-106.9H32.4v70.2c44.1 87.5 137.9 146.9 234.3 146.9z"
-      fill="#34A853"
-    />
-    <path
-      d="M121.3 320.1c-4.9-14.5-7.7-29.7-7.7-44.8s2.8-30.3 7.7-44.8V159.5H32.4c-15.9 31.5-24.5 68.4-24.5 108.8 0 40.4 8.6 77.3 24.5 108.8l88.9-70.2z"
-      fill="#FBBC05"
-    />
-    <path
-      d="M266.7 104.2c39.9 0 75.9 13.8 103.9 40.5l78.7-78.7c-48.4-45.5-112.5-67.1-182.7-67.1C128.8 0 35 59.4 0 146.9l88.9 70.2c20.5-61.2 77.8-106.9 145.4-106.9z"
-      fill="#EA4335"
-    />
-  </svg>
-);
-const FacebookIcon = () => (
-  <FaFacebook className="w-5 h-5 mr-3 text-blue-600" />
-);
-
-// --- Left Features Section (FIXED FOR RESPONSIVENESS AND AESTHETICS) ---
-const LeftSideFeatureVisual = () => {
-  const FEATURES = [
-    "Unlimited everything, no credit card required.",
-    "No limit on users. Invite the whole team.",
-    "Use with confidence. Over 10,000 small businesses use LACRM.",
-    "Private and secure.",
-  ];
-
-
-  const featurePositions = [
-
-    "top-12 left-12",
-
-    "top-12 right-12",
-
-    "bottom-12 left-12",
-
-    "bottom-12 right-12",
-  ];
-
-  return (
-    <div
-      className="w-full h-full p-8 md:p-16 flex items-center justify-center relative overflow-hidden"
-      style={{
-        backgroundImage: `url(${BACKGROUND_IMAGE_CONFIG.src})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}>
-      <div className="absolute inset-0 bg-black/80 z-0"></div>
-
-      {/* Wrapper to center the Image's visual space */}
-      <div
-        className="relative z-20 w-full max-w-3xl h-full flex items-center justify-center animate-fadeInRight"
-        id="ImageAndBubbleWrapper">
-        {/* New Inner Container (relative w-full h-full) to align Image and Bubbles */}
-        <div className="relative w-full h-full ">
-          <Image
-            src={LEFT_IMAGE_CONFIG.src}
-            alt={LEFT_IMAGE_CONFIG.alt}
-            layout="fill"
-            objectFit="contain"
-            // className="object-cover"
-            unoptimized
-          />
-
-          {FEATURES.map((feature, index) => (
-            <div
-              key={index}
-              // Apply stable corner position classes for aesthetic offset
-              className={`absolute z-30 bg-white/80 rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] text-gray-900 backdrop-blur-xl flex flex-col items-center justify-center text-center float-bubble ${featurePositions[index]}`}
-              style={{
-                width: "150px",
-                height: "150px",
-                padding: "20px",
-                borderRadius: "50%",
-                animationDelay: `${300 + index * 200}ms`,
-                minWidth: "150px",
-                minHeight: "150px",
-                // Adjusting transform origin slightly to make the positioning look cleaner.
-                transform: `translate(${
-                  featurePositions[index].includes("left") ? "-50%" : "50%"
-                }, ${
-                  featurePositions[index].includes("top") ? "-50%" : "50%"
-                })`,
-                // We are now manually calculating the translate to center the bubble on the offset
-                // Top Left: translate(-50%, -50%)
-                // Top Right: translate(50%, -50%)
-                // Bottom Left: translate(-50%, 50%)
-                // Bottom Right: translate(50%, 50%)
-              }}>
-              <FaCheckCircle className="w-8 h-8 flex-shrink-0 text-orange-600 mb-2" />
-              <p className="text-[13px] font-semibold">{feature}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// --- Main SignUp Page (No Change) ---
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [offset, setOffset] = useState(0);
 
-  const handleSubmit = (e) => e.preventDefault();
+  // স্লো স্ক্রলিং লজিক
+  useEffect(() => {
+    const handleWheel = (e) => {
+      setOffset((prev) => {
+        const newOffset = prev + e.deltaY * 0.15; // ০.১৫ স্লো স্পিড
+        return Math.max(0, Math.min(newOffset, 800)); // লিমিট
+      });
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    return () => window.removeEventListener("wheel", handleWheel);
+  }, []);
 
   return (
-    <div className="flex items-stretch h-screen w-full bg-white overflow-hidden">
-      {/* LEFT FEATURES COLUMN */}
-      <div className="hidden lg:flex h-full w-2/3">
-        <LeftSideFeatureVisual />
+    <div className="flex h-screen w-full bg-white overflow-hidden font-sans relative">
+      {/* 🟢 LEFT SECTION: SLOW SCROLLING BACKGROUND (Fixed Container) */}
+      <div className="hidden lg:block relative w-[68%] h-full bg-[#1a1a1a] overflow-hidden z-0">
+        {/* Background Image Wrapper - Full Height and No Cutting */}
+        <div
+          className="absolute w-full h-[200vh] top-0 left-0 transition-transform duration-150 ease-out"
+          style={{
+            transform: `translate3d(0, ${-offset}px, 0)`,
+            willChange: "transform",
+          }}>
+          <img
+            src={DASHBOARD_PREVIEW}
+            alt="Dashboard Background"
+            className="w-full h-full object-cover object-top opacity-30"
+          />
+        </div>
+
+        {/* Sticky Modal Card - এটি স্থির থাকবে */}
+        <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none px-12">
+          <div className="pointer-events-auto w-full max-w-2xl bg-white rounded-xl shadow-2xl p-10 text-center animate-fadeInUp">
+            <h2 className="text-[#e68a3e] font-bold text-lg uppercase tracking-widest mb-3">
+              Grow your pipeline, not your expenses
+            </h2>
+            <h1 className="text-[#333] text-4xl font-extrabold mb-4 leading-tight">
+              Explore everything without credit card
+            </h1>
+            <p className="text-gray-500 text-lg mb-8">
+              Simple to use. Easy to afford
+            </p>
+
+            <div className="border border-gray-100 rounded-lg overflow-hidden shadow-md">
+              <img
+                src={MODAL_IMAGE}
+                alt="Feature Preview"
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* RIGHT FORM COLUMN */}
-      <div className="w-full lg:w-1/3 flex flex-col items-center justify-center p-5 py-8 lg:p-10 lg:py-16 animate-fadeInLeft overflow-y-auto">
-        <div className="max-w-md w-full">
-          <div className="flex justify-center mb-6 lg:mb-10">
+      {/* 🔴 RIGHT SECTION: REGISTRATION FORM - FIXED */}
+      <div className="w-full lg:w-[32%] h-full bg-white flex flex-col items-center justify-center overflow-y-auto px-10 border-l border-gray-100 shadow-2xl z-50">
+        <div className="w-full max-w-sm py-8">
+          <div className="flex flex-col items-center mb-8">
             <Image
               src={LOGO_CONFIG.src}
               alt={LOGO_CONFIG.alt}
@@ -159,161 +92,127 @@ export default function SignUpPage() {
               height={LOGO_CONFIG.height}
               unoptimized
             />
+            <h2 className="text-3xl font-bold text-gray-700 mt-6">
+              Register yourself
+            </h2>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">
-                Industry
+              <label className="flex items-center text-sm font-bold text-gray-600 mb-2">
+                <FaBuilding className="mr-2 text-gray-400" /> Enter your company{" "}
+                <span className="text-orange-500 ml-1">*</span>
               </label>
               <input
                 type="text"
+                placeholder="Company name"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-1 focus:ring-orange-400 outline-none text-sm"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500"
-                placeholder="Enter your industry"
               />
             </div>
 
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">
-                Email
+              <label className="flex items-center text-sm font-bold text-gray-600 mb-2">
+                <FaEnvelope className="mr-2 text-gray-400" /> Enter your email{" "}
+                <span className="text-orange-500 ml-1">*</span>
               </label>
               <input
                 type="email"
+                placeholder="email@example.com"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-1 focus:ring-orange-400 outline-none text-sm"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500"
-                placeholder="Enter your email"
               />
             </div>
 
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">
-                Password
+              <label className="flex items-center text-sm font-bold text-gray-600 mb-2">
+                <FaLock className="mr-2 text-gray-400" /> Enter your password{" "}
+                <span className="text-orange-500 ml-1">*</span>
               </label>
-              <input
-                type={showPassword ? "text" : "password"}
-                required
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500"
-                placeholder="Enter your password"
-              />
-              <button
-                type="button"
-                className="text-orange-500 text-sm mt-1"
-                onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? "Hide" : "Show"} Password
-              </button>
+              <div className="relative flex">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-l-sm focus:ring-1 focus:ring-orange-400 outline-none text-sm border-r-0"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="bg-black text-white px-3 flex items-center justify-center rounded-r-sm hover:bg-gray-800 transition-colors">
+                  {showPassword ? (
+                    <FaEyeSlash size={16} />
+                  ) : (
+                    <FaEye size={16} />
+                  )}
+                </button>
+              </div>
             </div>
+
+            <p className="text-[11px] text-gray-500 text-center leading-relaxed">
+              By signing up, you agree to our{" "}
+              <span className="text-black font-bold underline cursor-pointer">
+                Terms
+              </span>{" "}
+              and{" "}
+              <span className="text-black font-bold underline cursor-pointer">
+                Privacy
+              </span>
+            </p>
 
             <button
               type="submit"
-              className="w-full py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
-              Start your free trial
+              className="w-full py-3 bg-[#e68a3e] hover:bg-[#d47930] text-white font-bold rounded-md shadow-md transition-all text-lg uppercase tracking-wide">
+              Sign up
             </button>
 
-            {/* SOCIAL LOGIN */}
-            <div className="flex flex-col space-y-3 pt-2">
-              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                <GoogleIcon /> Sign in with Google
-              </button>
-              <button className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                <FacebookIcon /> Sign in with Facebook
-              </button>
-            </div>
-
-            {/* Adjusted pt-3 and pb-6 for better visibility on mobile */}
-            <p className="text-center text-sm text-gray-600 pt-3 pb-6">
-              Already have an account?{" "}
-              <a
-                href="/ "
-                className="text-orange-500 font-semibold hover:underline">
-                Log in
-              </a>
-            </p>
+            <button className="w-full flex items-center justify-center py-2.5 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors text-gray-700 font-bold text-sm shadow-sm">
+              <img
+                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                alt="G"
+                className="w-5 h-5 mr-3"
+              />
+              Sign in with Google
+            </button>
           </form>
+
+          <div className="mt-10 text-center">
+            <p className="text-sm font-bold text-gray-500 mb-6">
+              <Link href="/">
+                <span className="hover:text-black hover:underline">
+                  Sign in
+                </span>
+              </Link>
+              {" / "}
+              <span className="hover:text-black hover:underline cursor-pointer">
+                Forgot password
+              </span>
+            </p>
+            <div className="flex justify-center space-x-6 text-[13px] text-gray-500 font-bold">
+              <span className="hover:text-black cursor-pointer">Home</span>
+              <span className="hover:text-black cursor-pointer">Privacy</span>
+              <span className="hover:text-black cursor-pointer">Terms</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Animations and Global Styles (No functional changes here) */}
-      <style jsx>{`
-        /* This ensures no scrollbar on the main window */
-        html,
-        body {
-          margin: 0;
-          padding: 0;
-          width: 100vw;
-          height: 100vh;
-          overflow: hidden;
-          box-sizing: border-box;
-        }
-
-        @keyframes fadeInLeft {
-          0% {
-            opacity: 0;
-            transform: translateX(-30px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        @keyframes fadeInRight {
-          0% {
-            opacity: 0;
-            transform: translateX(30px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        .animate-fadeInLeft {
-          animation: fadeInLeft 0.7s ease-out forwards;
-        }
-        .animate-fadeInRight {
-          animation: fadeInRight 0.7s ease-out forwards;
-        }
-      `}</style>
-
-      {/* Floating + Pop animation for features */}
       <style jsx global>{`
-        /* Global styles specific to the body/html */
-        html,
         body {
-          margin: 0;
-          padding: 0;
-          width: 100%;
-          height: 100%;
           overflow: hidden;
         }
-
-        @keyframes bubblePop {
-          0% {
+        @keyframes fadeInUp {
+          from {
             opacity: 0;
-            transform: scale(0.5);
+            transform: translateY(40px);
           }
-          60% {
+          to {
             opacity: 1;
-            transform: scale(1.1);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
+            transform: translateY(0);
           }
         }
-        @keyframes floating {
-          0% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-12px);
-          }
-          100% {
-            transform: translateY(0px);
-          }
-        }
-        .float-bubble {
-          animation: bubblePop 0.6s ease-out forwards,
-            floating 4s ease-in-out infinite;
+        .animate-fadeInUp {
+          animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
       `}</style>
     </div>
