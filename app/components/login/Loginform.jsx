@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { FaEye, FaEyeSlash, FaEnvelope, FaLock } from "react-icons/fa";
 import Link from "next/link";
@@ -19,14 +19,20 @@ const FEATURE_PREVIEW = "/login-img-1.jpeg";
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [offset, setOffset] = useState(0);
+  const bgImageRef = useRef(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const handleWheel = (e) => {
+      if (!bgImageRef.current || !containerRef.current) return;
+
+      const imgHeight = bgImageRef.current.offsetHeight;
+      const screenHeight = containerRef.current.offsetHeight;
+      const maxScroll = imgHeight - screenHeight;
+
       setOffset((prev) => {
-       
-        const newOffset = prev + e.deltaY * 0.15;
-        
-        return Math.max(0, Math.min(newOffset, 800));
+        const newOffset = prev + e.deltaY * 0.15; // speed control
+        return Math.max(0, Math.min(newOffset, maxScroll > 0 ? maxScroll : 0));
       });
     };
 
@@ -34,11 +40,18 @@ export default function LoginPage() {
     return () => window.removeEventListener("wheel", handleWheel);
   }, []);
 
+  const stopParallax = (e) => e.stopPropagation();
+
   return (
-    <div className="flex h-screen w-full bg-white overflow-hidden font-sans relative">
-      {/* 🔴 LEFT SIDE: LOGIN FORM - FIXED */}
-      <div className="w-full lg:w-[32%] h-full bg-white z-50 flex flex-col items-center justify-center px-8 xl:px-14 border-r border-gray-100 shadow-2xl relative">
-        <div className="w-full max-w-sm">
+    <div
+      ref={containerRef}
+      className="flex flex-col lg:flex-row h-screen w-full bg-white overflow-hidden font-sans relative">
+      {/* 🔴 LEFT SIDE: LOGIN FORM - SCROLL FIX APPLIED */}
+      <div
+        onWheel={stopParallax}
+        className="w-full lg:w-[32%] h-full bg-white z-50 flex flex-col items-center px-8 xl:px-14 border-r border-gray-100 shadow-2xl relative overflow-y-auto custom-scrollbar">
+
+        <div className="w-full max-w-sm py-12 flex flex-col min-h-full">
           <div className="flex flex-col items-center mb-8">
             <Image
               src={LOGO_CONFIG.src}
@@ -104,11 +117,11 @@ export default function LoginPage() {
 
             <p className="text-[11px] text-[#646c79] text-center leading-relaxed">
               By signing up, you agree to the{" "}
-              <span className="font-bold text-black cursor-pointer">
+              <span className="font-bold text-black cursor-pointer hover:underline">
                 Terms of Service
               </span>{" "}
               and acknowledge our{" "}
-              <span className="font-bold text-black cursor-pointer">
+              <span className="font-bold text-black cursor-pointer hover:underline">
                 Privacy Policy
               </span>
             </p>
@@ -127,7 +140,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-10 text-center text-[#646c79] font-bold">
+          <div className="mt-10 text-center text-[#646c79] font-bold flex-grow">
             <p className="text-[14px] mb-4">
               Do not have account?{" "}
               <Link href="/register">
@@ -136,7 +149,7 @@ export default function LoginPage() {
                 </span>
               </Link>
             </p>
-            <div className="flex justify-center space-x-6 text-[13px]">
+            <div className="flex justify-center space-x-6 text-[13px] mt-auto pb-4">
               <span className="hover:text-black cursor-pointer">Home</span>
               <span className="hover:text-black cursor-pointer">Privacy</span>
               <span className="hover:text-black cursor-pointer">Terms</span>
@@ -145,23 +158,22 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* 🟢 RIGHT SIDE: BACKGROUND IMAGE  */}
+      {/* 🟢 RIGHT SIDE: BACKGROUND IMAGE WITH DYNAMIC LIMIT */}
       <div className="hidden lg:block relative flex-1 h-full bg-[#1a1a1a] overflow-hidden z-0">
-        {/* Background Image Wrapper */}
         <div
-          className="absolute w-full h-[200vh] top-0 left-0 transition-transform duration-150 ease-out"
+          className="absolute w-full top-0 left-0 transition-transform duration-150 ease-out"
           style={{
             transform: `translate3d(0, ${-offset}px, 0)`,
             willChange: "transform",
           }}>
           <img
+            ref={bgImageRef}
             src={DASHBOARD_BG}
             alt="Dashboard Background"
-            className="w-full h-full object-cover object-top opacity-40"
+            className="w-full h-auto min-h-screen object-cover object-top opacity-40"
           />
         </div>
 
-        {/* Center Modal Card - Fixed on top */}
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none px-12">
           <div className="pointer-events-auto w-full max-w-[700px] bg-white rounded-2xl shadow-2xl p-12 text-center animate-fadeInUp">
             <h5 className="text-[#e68a3e] font-bold text-xs uppercase tracking-widest mb-4">
@@ -185,8 +197,17 @@ export default function LoginPage() {
       </div>
 
       <style jsx global>{`
-        body {
-          overflow: hidden;
+        @media (min-width: 1024px) {
+          body {
+            overflow: hidden;
+          }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .custom-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
         @keyframes fadeInUp {
           from {
