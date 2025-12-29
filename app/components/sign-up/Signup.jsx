@@ -11,59 +11,96 @@ import {
 } from "react-icons/fa";
 import Link from "next/link";
 
-const LOGO_CONFIG = {
-  src: "/logo.svg",
-  alt: "ihelp logo",
-  width: 140,
-  height: 50,
-};
-const DASHBOARD_PREVIEW = "/dashboard-bg.png";
+// Static Export এর জন্য Image Optimization ডিজেবল করতে হয় অথবা unoptimized প্রপ ব্যবহার করতে হয়।
+const LOGO_CONFIG = { src: "/logo.svg", alt: "logo", width: 140, height: 50 };
 const MODAL_IMAGE = "/signup-main.jpeg";
+
+const FLOATING_IMAGES = [
+  "/assets/img-1.webp",
+  "/assets/img-2.webp",
+  "/assets/img-3.webp",
+  "/assets/img-4.webp",
+  "/assets/img-5.webp",
+  "/assets/img-6.webp",
+  "/assets/img-7.webp",
+  "/assets/img-8.webp",
+  "/assets/img-9.webp",
+  "/assets/img-10.webp",
+];
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [offset, setOffset] = useState(0);
-  const bgImageRef = useRef(null);
-  const containerRef = useRef(null);
+  const [items, setItems] = useState([]);
 
+  // Floating items setup
   useEffect(() => {
-    const handleWheel = (e) => {
-      if (!bgImageRef.current || !containerRef.current) return;
-      const imgHeight = bgImageRef.current.offsetHeight;
-      const screenHeight = containerRef.current.offsetHeight;
-      const maxScroll = imgHeight - screenHeight;
-
-      setOffset((prev) => {
-        const newOffset = prev + e.deltaY * 0.15;
-        return Math.max(0, Math.min(newOffset, maxScroll > 0 ? maxScroll : 0));
-      });
-    };
-
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => window.removeEventListener("wheel", handleWheel);
+    const tempItems = Array.from({ length: 15 }).map((_, i) => ({
+      id: i,
+      src: FLOATING_IMAGES[i % FLOATING_IMAGES.length],
+      size: Math.random() * 60 + 100,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      speedX: Math.random() * 0.05 + 0.02, // স্পিড কিছুটা কমানো হয়েছে স্মুথনেসের জন্য
+      speedY: Math.random() * 0.05 + 0.02,
+      rotate: Math.random() * 30 - 15,
+      delay: Math.random() * 5,
+    }));
+    setItems(tempItems);
   }, []);
 
-  const stopParallax = (e) => e.stopPropagation();
+  // Animation loop with requestAnimationFrame
+  useEffect(() => {
+    if (items.length === 0) return;
+
+    let animationFrame;
+    const animate = () => {
+      setItems((prev) =>
+        prev.map((item) => {
+          let newX = item.x + item.speedX;
+          let newY = item.y + item.speedY;
+
+          if (newX > 110) newX = -10;
+          if (newY > 110) newY = -10;
+
+          return { ...item, x: newX, y: newY };
+        })
+      );
+      animationFrame = requestAnimationFrame(animate);
+    };
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [items.length > 0]);
 
   return (
-    <div
-      ref={containerRef}
-      className="flex flex-col lg:flex-row h-screen w-full bg-white overflow-hidden font-sans relative">
-      {/* 🟢 LEFT SECTION: BACKGROUND PARALLAX */}
-      <div className="hidden lg:block relative w-[68%] h-full bg-[#1a1a1a] overflow-hidden z-0">
-        <div
-          className="absolute w-full top-0 left-0 transition-transform duration-150 ease-out"
-          style={{
-            transform: `translate3d(0, ${-offset}px, 0)`,
-            willChange: "transform",
-          }}>
-          <img
-            ref={bgImageRef}
-            src={DASHBOARD_PREVIEW}
-            alt="Dashboard Background"
-            className="w-full h-auto min-h-screen object-cover object-top opacity-30"
-          />
-        </div>
+    <div className="flex flex-col lg:flex-row h-screen w-full bg-white font-sans overflow-hidden">
+      {/* LEFT SECTION */}
+      <div className="hidden lg:block relative w-[68%] h-full bg-[#1a1a1a] overflow-hidden">
+        <div className="absolute top-[-20%] left-[-20%] w-[80%] h-[80%] rounded-full bg-orange-600/20 blur-[130px]"></div>
+        <div className="absolute bottom-[-20%] right-[-20%] w-[80%] h-[80%] rounded-full bg-[#e68a3e]/20 blur-[130px]"></div>
+
+        {items.map((item) => (
+          <div
+            key={item.id}
+            className="absolute will-change-transform pointer-events-none"
+            style={{
+              top: `${item.y}%`,
+              left: `${item.x}%`,
+              transform: `rotate(${item.rotate}deg)`,
+            }}>
+            <div
+              className="animate-float"
+              style={{ animationDelay: `${item.delay}s` }}>
+              <Image
+                src={item.src}
+                alt="floating"
+                width={item.size}
+                height={item.size}
+                className="opacity-40 object-contain"
+                unoptimized // স্ট্যাটিক এক্সপোর্ট এরর সলভ করতে এটি যোগ করা হয়েছে
+              />
+            </div>
+          </div>
+        ))}
 
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none px-12">
           <div className="pointer-events-auto w-full max-w-2xl bg-white rounded-xl shadow-2xl p-10 text-center animate-fadeInUp">
@@ -76,7 +113,7 @@ export default function SignUpPage() {
             <p className="text-gray-500 text-lg mb-8">
               Simple to use. Easy to afford
             </p>
-            <div className="border border-gray-100 rounded-lg overflow-hidden shadow-md">
+            <div className="border border-gray-100 rounded-lg overflow-hidden shadow-md bg-gray-50">
               <img
                 src={MODAL_IMAGE}
                 alt="Feature Preview"
@@ -87,11 +124,8 @@ export default function SignUpPage() {
         </div>
       </div>
 
-      {/* 🔴 RIGHT SECTION: FORM (Scroll Fix) */}
-      <div
-        onWheel={stopParallax}
-        className="w-full lg:w-[32%] h-full bg-white flex flex-col items-center overflow-y-auto px-6 sm:px-10 border-l border-gray-100 shadow-2xl z-50 relative custom-scrollbar">
-
+      {/* RIGHT SECTION: FORM */}
+      <div className="w-full lg:w-[32%] h-full bg-white flex flex-col items-center overflow-y-auto px-6 sm:px-10 border-l border-gray-100 shadow-2xl z-50 relative custom-scrollbar">
         <div className="w-full max-w-sm py-12 flex flex-col min-h-full">
           <div className="flex flex-col items-center mb-8">
             <Image
@@ -107,30 +141,19 @@ export default function SignUpPage() {
           </div>
 
           <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
-            <div>
-              <label className="flex items-center text-sm font-bold text-gray-600 mb-2">
-                <FaBuilding className="mr-2 text-gray-400" /> Enter your company{" "}
-                <span className="text-orange-500 ml-1">*</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Company name"
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-1 focus:ring-orange-400 outline-none text-sm"
-                required
-              />
-            </div>
-            <div>
-              <label className="flex items-center text-sm font-bold text-gray-600 mb-2">
-                <FaEnvelope className="mr-2 text-gray-400" /> Enter your email{" "}
-                <span className="text-orange-500 ml-1">*</span>
-              </label>
-              <input
-                type="email"
-                placeholder="email@example.com"
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-1 focus:ring-orange-400 outline-none text-sm"
-                required
-              />
-            </div>
+            <InputField
+              label="Enter your company"
+              icon={<FaBuilding />}
+              type="text"
+              placeholder="Company name"
+            />
+            <InputField
+              label="Enter your email"
+              icon={<FaEnvelope />}
+              type="email"
+              placeholder="email@example.com"
+            />
+
             <div>
               <label className="flex items-center text-sm font-bold text-gray-600 mb-2">
                 <FaLock className="mr-2 text-gray-400" /> Enter your password{" "}
@@ -140,13 +163,13 @@ export default function SignUpPage() {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-l-sm focus:ring-1 focus:ring-orange-400 outline-none text-sm border-r-0"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-l-md focus:ring-1 focus:ring-orange-400 outline-none text-sm border-r-0"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="bg-black text-white px-3 flex items-center justify-center rounded-r-sm">
+                  className="bg-black text-white px-3 flex items-center justify-center rounded-r-md transition-colors hover:bg-gray-800">
                   {showPassword ? (
                     <FaEyeSlash size={16} />
                   ) : (
@@ -156,7 +179,7 @@ export default function SignUpPage() {
               </div>
             </div>
 
-            <p className="text-[11px] text-[#646c79] text-center leading-relaxed">
+            <p className="text-[11px] text-[#646c79] text-center leading-relaxed px-2">
               By signing up, you agree to the{" "}
               <span className="font-bold text-black cursor-pointer hover:underline">
                 Terms of Service
@@ -169,28 +192,25 @@ export default function SignUpPage() {
 
             <button
               type="submit"
-              className="w-full py-3 bg-[#e68a3e] hover:bg-[#d47930] text-white font-bold rounded-md shadow-md transition-all text-lg uppercase tracking-wide">
+              className="w-full py-3 bg-[#e68a3e] hover:bg-[#d47930] text-white font-bold rounded-md shadow-md transition-all text-lg uppercase tracking-wide active:scale-95">
               Sign up
             </button>
           </form>
 
-          {/* Bottom Content Area */}
-          <div className="mt-10 text-center flex-grow">
-            <p className="text-sm font-bold text-gray-500 mb-6">
+          <div className="mt-10 text-center flex-grow flex flex-col justify-between">
+            <p className="text-sm font-bold text-gray-500">
               <Link href="/">
                 <span className="hover:text-black hover:underline cursor-pointer">
                   Sign in
                 </span>
-              </Link>
-              {" / "}
+              </Link>{" "}
+              /{" "}
               <span className="hover:text-black hover:underline cursor-pointer">
                 Forgot password
               </span>
             </p>
 
-            
-
-            <div className="flex justify-center space-x-6 text-[13px] text-gray-500 font-bold mt-auto pb-4">
+            <div className="flex justify-center space-x-6 text-[13px] text-gray-500 font-bold pt-10 pb-4">
               <span className="hover:text-black cursor-pointer">Home</span>
               <span className="hover:text-black cursor-pointer">Privacy</span>
               <span className="hover:text-black cursor-pointer">Terms</span>
@@ -200,12 +220,6 @@ export default function SignUpPage() {
       </div>
 
       <style jsx global>{`
-        @media (min-width: 1024px) {
-          body {
-            overflow: hidden;
-          }
-        }
-        /* Hide scrollbar but allow scrolling */
         .custom-scrollbar::-webkit-scrollbar {
           display: none;
         }
@@ -227,7 +241,36 @@ export default function SignUpPage() {
         .animate-fadeInUp {
           animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
+        }
+        .animate-float {
+          animation: float 8s ease-in-out infinite;
+        }
       `}</style>
+    </div>
+  );
+}
+
+function InputField({ label, icon, ...props }) {
+  return (
+    <div className="w-full">
+      <label className="flex items-center text-sm font-bold text-gray-600 mb-2">
+        <span className="mr-2 text-gray-400">{icon}</span> {label}{" "}
+        <span className="text-orange-500 ml-1">*</span>
+      </label>
+      <input
+        {...props}
+        className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-orange-400 outline-none text-sm"
+        required
+      />
     </div>
   );
 }
